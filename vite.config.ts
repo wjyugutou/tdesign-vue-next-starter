@@ -1,6 +1,8 @@
 import path from 'node:path';
 
+// @ts-ignore
 import vue from '@vitejs/plugin-vue';
+// @ts-ignore
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import type { ConfigEnv, UserConfig } from 'vite';
 import { loadEnv } from 'vite';
@@ -23,7 +25,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         '@': path.resolve(__dirname, './src'),
       },
     },
-
     css: {
       preprocessorOptions: {
         less: {
@@ -35,12 +36,12 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
       },
     },
-
     plugins: [
       vue(),
       vueJsx(),
       svgLoader(), 
       AutoImport({
+        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
         resolvers: [TDesignResolver({
           library: 'vue-next'
         })],
@@ -53,7 +54,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         dts: 'src/types/components.d.ts',
       }),
     ],
-
     server: {
       open: false,
       port: 3002,
