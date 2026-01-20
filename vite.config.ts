@@ -55,6 +55,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     ],
 
     server: {
+      open: false,
       port: 3002,
       host: '0.0.0.0',
       allowedHosts: true,

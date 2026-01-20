@@ -13,7 +13,7 @@
             <component :is="menuIcon(item)" class="t-icon"></component>
           </template>
           {{ renderMenuTitle(item.title) }}
-        </t-menu-item>  
+        </t-menu-item>
       </template>
       <t-submenu v-else :name="item.path" :value="item.path" :title="renderMenuTitle(item.title)">
         <template #icon>

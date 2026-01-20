@@ -23,24 +23,23 @@
           <!-- 全局通知 -->
           <notice />
 
-          <t-tooltip placement="bottom" :content="t('layout.header.code')">
+          <t-tooltip placement="bottom" :content="代码仓库">
             <t-button theme="default" shape="square" variant="text" @click="navToGitHub">
               <t-icon name="logo-github" />
             </t-button>
           </t-tooltip>
-          <t-tooltip placement="bottom" :content="t('layout.header.help')">
+          <t-tooltip placement="bottom" :content="帮助文档">
             <t-button theme="default" shape="square" variant="text" @click="navToHelper">
               <t-icon name="help-circle" />
             </t-button>
           </t-tooltip>
-          <language-switcher />
           <t-dropdown :min-column-width="120" trigger="click">
             <template #dropdown>
               <t-dropdown-item class="operations-dropdown-container-item" @click="handleNav('/user/index')">
-                <user-circle-icon />{{ t('layout.header.user') }}
+                <user-circle-icon />个人中心
               </t-dropdown-item>
               <t-dropdown-item class="operations-dropdown-container-item" @click="handleLogout">
-                <poweroff-icon />{{ t('layout.header.signOut') }}
+                <poweroff-icon />退出登录
               </t-dropdown-item>
             </template>
             <t-button class="header-user-btn" theme="default" variant="text">
@@ -51,7 +50,7 @@
               <template #suffix><chevron-down-icon /></template>
             </t-button>
           </t-dropdown>
-          <t-tooltip placement="bottom" :content="t('layout.header.setting')">
+          <t-tooltip placement="bottom" :content="系统设置">
             <t-button theme="default" shape="square" variant="text" @click="toggleSettingPanel">
               <setting-icon />
             </t-button>
@@ -68,9 +67,7 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import LogoFull from '@/assets/assets-logo-full.svg?component';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import { prefix } from '@/config/global';
-import { t } from '@/locales';
 import { getActive } from '@/router';
 import { useSettingStore, useUserStore } from '@/store';
 import type { MenuRoute, ModeType } from '@/types/interface';

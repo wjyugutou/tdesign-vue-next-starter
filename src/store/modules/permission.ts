@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash/cloneDeep';
+import { cloneDeep } from 'lodash-es';
 import { defineStore } from 'pinia';
 import type { RouteRecordRaw } from 'vue-router';
 

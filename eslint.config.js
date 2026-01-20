@@ -12,14 +12,22 @@ export default antfu(
   [
     {
       files: ['**/*.vue'],
-
       rules: {
-        'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+        // 组件名称 书写方式 自动修复为PascalCase
+        'vue/component-name-in-template-casing': [
+          'error',
+          'PascalCase',
+          {
+          // 为false检查全部组件，true 检查注册组件（对unplugin-vue-components无效），
+            registeredComponentsOnly: false,
+            ignores: [],
+          },
+        ],
         'vue/custom-event-name-casing': ['error', 'kebab-case'],
         'vue/block-order': [
           'error',
           {
-            order: ['template', 'script', 'style'],
+            order: ['script', 'template', 'style'],
           },
         ],
         'vue/block-lang': [

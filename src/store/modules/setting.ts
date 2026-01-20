@@ -1,4 +1,4 @@
-import keys from 'lodash/keys';
+import { keys } from 'lodash-es';
 import { defineStore } from 'pinia';
 import { Color } from 'tvision-color';
 
