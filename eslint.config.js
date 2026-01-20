@@ -1,4 +1,5 @@
-import antfu from '@antfu/eslint-config';
+import antfu from '@antfu/eslint-config'
+import { globalIgnores } from 'eslint/config'
 
 export default antfu(
   {
@@ -42,14 +43,6 @@ export default antfu(
         'vue/no-reserved-props': 'off',
         'vue/no-v-html': 'off',
 
-        'vue-scoped-css/no-parsing-error': 'off',
-        'vue-scoped-css/no-unused-selector': 'off',
-        'vue-scoped-css/enforce-style-type': [
-          'error',
-          {
-            allows: ['scoped'],
-          },
-        ],
         'vue/padding-line-between-blocks': ['error', 'never'],
       },
     },
@@ -70,4 +63,9 @@ export default antfu(
       '!**/.prettierrc.js',
     ]),
   ],
-);
+  {
+    rules: {
+      'no-console': 'off',
+    },
+  },
+)

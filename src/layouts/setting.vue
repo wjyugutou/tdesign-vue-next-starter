@@ -1,5 +1,113 @@
+<script setup lang="ts">
+import type { PopupVisibleChangeContext } from 'tdesign-vue-next'
+import { useClipboard } from '@vueuse/core'
+import { MessagePlugin } from 'tdesign-vue-next'
+import { computed, onMounted, ref, watchEffect } from 'vue'
+
+import SettingAutoIcon from '@/assets/assets-setting-auto.svg'
+import SettingDarkIcon from '@/assets/assets-setting-dark.svg'
+import SettingLightIcon from '@/assets/assets-setting-light.svg'
+import ColorContainer from '@/components/color/index.vue'
+import Thumbnail from '@/components/thumbnail/index.vue'
+import { DEFAULT_COLOR_OPTIONS } from '@/config/color'
+import STYLE_CONFIG from '@/config/style'
+import { useSettingStore } from '@/store'
+
+const settingStore = useSettingStore()
+
+const LAYOUT_OPTION = ['side', 'top', 'mix']
+
+const MODE_OPTIONS = [
+  { type: 'light', text: '明亮' },
+  { type: 'dark', text: '深色' },
+  { type: 'auto', text: '跟随系统' },
+]
+
+function initStyleConfig() {
+  const styleConfig = STYLE_CONFIG
+  for (const key in styleConfig) {
+    if (Object.prototype.hasOwnProperty.call(styleConfig, key)) {
+      (styleConfig[key as keyof typeof STYLE_CONFIG] as any) = settingStore[key as keyof typeof STYLE_CONFIG]
+    }
+  }
+
+  return styleConfig
+}
+const formData = ref({ ...initStyleConfig() })
+
+const dynamicColor = computed(() => {
+  const isDynamic = DEFAULT_COLOR_OPTIONS.includes(formData.value.brandTheme)
+  return isDynamic ? formData.value.brandTheme : ''
+})
+const isColoPickerDisplay = ref(false)
+
+const showSettingPanel = computed({
+  get() {
+    return settingStore.showSettingPanel
+  },
+  set(newVal: boolean) {
+    settingStore.updateConfig({
+      showSettingPanel: newVal,
+    })
+  },
+})
+
+function changeColor(hex: string) {
+  formData.value.brandTheme = hex
+}
+
+onMounted(() => {
+  document.querySelector('.dynamic-color-btn').addEventListener('click', () => {
+    isColoPickerDisplay.value = true
+  })
+})
+
+function onPopupVisibleChange(visible: boolean, context: PopupVisibleChangeContext) {
+  if (!visible && context.trigger === 'document') {
+    isColoPickerDisplay.value = visible
+  }
+}
+
+function handleCopy() {
+  const sourceText = JSON.stringify(formData.value, null, 4)
+  const { copy } = useClipboard({ source: sourceText })
+  copy()
+    .then(() => {
+      MessagePlugin.closeAll()
+      MessagePlugin.success('复制成功')
+    })
+    .catch(() => {
+      MessagePlugin.closeAll()
+      MessagePlugin.error('复制失败')
+    })
+}
+function getModeIcon(mode: string) {
+  if (mode === 'light') {
+    return SettingLightIcon
+  }
+  if (mode === 'dark') {
+    return SettingDarkIcon
+  }
+  return SettingAutoIcon
+}
+
+function handleCloseDrawer() {
+  settingStore.updateConfig({
+    showSettingPanel: false,
+  })
+}
+
+function getThumbnailUrl(name: string): string {
+  return `https://tdesign.gtimg.com/tdesign-pro/setting/${name}.png`
+}
+
+watchEffect(() => {
+  if (formData.value.brandTheme)
+    settingStore.updateConfig(formData.value)
+})
+</script>
 <template>
-  <t-drawer
+  <TDrawer
     v-model:visible="showSettingPanel"
     size="408px"
     :footer="false"
@@ -9,27 +117,33 @@
     @close-btn-click="handleCloseDrawer"
   >
     <div class="setting-container">
-      <t-form :data="formData" label-align="left">
-        <div class="setting-group-title">主题模式</div>
-        <t-radio-group v-model="formData.mode">
+      <TForm :data="formData" label-align="left">
+        <div class="setting-group-title">
+          主题模式
+        </div>
+        <TRadioGroup v-model="formData.mode">
           <div v-for="(item, index) in MODE_OPTIONS" :key="index" class="setting-layout-drawer">
             <div>
-              <t-radio-button :key="index" :value="item.type"
-                ><component :is="getModeIcon(item.type)"
-              /></t-radio-button>
-              <p :style="{ textAlign: 'center', marginTop: '8px' }">{{ item.text }}</p>
+              <TRadioButton :key="index" :value="item.type">
+                <component :is="getModeIcon(item.type)" />
+              </TRadioButton>
+              <p :style="{ textAlign: 'center', marginTop: '8px' }">
+                {{ item.text }}
+              </p>
             </div>
           </div>
-        </t-radio-group>
-        <div class="setting-group-title">主题色</div>
-        <t-radio-group v-model="formData.brandTheme">
+        </TRadioGroup>
+        <div class="setting-group-title">
+          主题色
+        </div>
+        <TRadioGroup v-model="formData.brandTheme">
           <div v-for="(item, index) in DEFAULT_COLOR_OPTIONS" :key="index" class="setting-layout-drawer">
-            <t-radio-button :key="index" :value="item" class="setting-layout-color-group">
-              <color-container :value="item" />
-            </t-radio-button>
+            <TRadioButton :key="index" :value="item" class="setting-layout-color-group">
+              <ColorContainer :value="item" />
+            </TRadioButton>
           </div>
           <div class="setting-layout-drawer">
-            <t-popup
+            <TPopup
               destroy-on-close
               expand-animation
               placement="bottom-right"
@@ -39,178 +153,75 @@
               @visible-change="onPopupVisibleChange"
             >
               <template #content>
-                <t-color-picker-panel
+                <TColorPickerPanel
                   :on-change="changeColor"
                   :color-modes="['monochrome']"
                   format="HEX"
                   :swatch-colors="[]"
                 />
               </template>
-              <t-radio-button :value="dynamicColor" class="setting-layout-color-group dynamic-color-btn">
-                <color-container :value="dynamicColor" />
-              </t-radio-button>
-            </t-popup>
+              <TRadioButton :value="dynamicColor" class="setting-layout-color-group dynamic-color-btn">
+                <ColorContainer :value="dynamicColor" />
+              </TRadioButton>
+            </TPopup>
           </div>
-        </t-radio-group>
-        <div class="setting-group-title">导航布局</div>
-        <t-radio-group v-model="formData.layout">
+        </TRadioGroup>
+        <div class="setting-group-title">
+          导航布局
+        </div>
+        <TRadioGroup v-model="formData.layout">
           <div v-for="(item, index) in LAYOUT_OPTION" :key="index" class="setting-layout-drawer">
-            <t-radio-button :key="index" :value="item">
-              <thumbnail :src="getThumbnailUrl(item)" />
-            </t-radio-button>
+            <TRadioButton :key="index" :value="item">
+              <Thumbnail :src="getThumbnailUrl(item)" />
+            </TRadioButton>
           </div>
-        </t-radio-group>
+        </TRadioGroup>
 
-        <t-form-item v-show="formData.layout === 'mix'" label="分割菜单（混合模式下有效）" name="splitMenu">
-          <t-switch v-model="formData.splitMenu" />
-        </t-form-item>
-        <t-form-item v-show="formData.layout === 'mix'" label="固定侧边栏" name="isSidebarFixed">
-          <t-switch v-model="formData.isSidebarFixed" />
-        </t-form-item>
+        <TFormItem v-show="formData.layout === 'mix'" label="分割菜单（混合模式下有效）" name="splitMenu">
+          <TSwitch v-model="formData.splitMenu" />
+        </TFormItem>
+        <TFormItem v-show="formData.layout === 'mix'" label="固定侧边栏" name="isSidebarFixed">
+          <TSwitch v-model="formData.isSidebarFixed" />
+        </TFormItem>
 
-        <div class="setting-group-title">元素开关</div>
-        <t-form-item label="侧边栏模式" name="sideMode">
-          <t-radio-group v-model="formData.sideMode" class="side-mode-radio">
-            <t-radio-button key="light" value="light" label="明亮" />
-            <t-radio-button key="dark" value="dark" label="深色" />
-          </t-radio-group>
-        </t-form-item>
-        <t-form-item
+        <div class="setting-group-title">
+          元素开关
+        </div>
+        <TFormItem label="侧边栏模式" name="sideMode">
+          <TRadioGroup v-model="formData.sideMode" class="side-mode-radio">
+            <TRadioButton key="light" value="light" label="明亮" />
+            <TRadioButton key="dark" value="dark" label="深色" />
+          </TRadioGroup>
+        </TFormItem>
+        <TFormItem
           v-show="formData.layout === 'side'"
           label="显示顶栏"
           name="showHeader"
         >
-          <t-switch v-model="formData.showHeader" />
-        </t-form-item>
-        <t-form-item label="显示面包屑" name="showBreadcrumb">
-          <t-switch v-model="formData.showBreadcrumb" />
-        </t-form-item>
-        <t-form-item label="显示页脚" name="showFooter">
-          <t-switch v-model="formData.showFooter" />
-        </t-form-item>
-        <t-form-item label="展示多标签Tab页" name="isUseTabsRouter">
-          <t-switch v-model="formData.isUseTabsRouter"></t-switch>
-        </t-form-item>
-        <t-form-item label="菜单自动折叠" name="menuAutoCollapsed">
-          <t-switch v-model="formData.menuAutoCollapsed"></t-switch>
-        </t-form-item>
-      </t-form>
+          <TSwitch v-model="formData.showHeader" />
+        </TFormItem>
+        <TFormItem label="显示面包屑" name="showBreadcrumb">
+          <TSwitch v-model="formData.showBreadcrumb" />
+        </TFormItem>
+        <TFormItem label="显示页脚" name="showFooter">
+          <TSwitch v-model="formData.showFooter" />
+        </TFormItem>
+        <TFormItem label="展示多标签Tab页" name="isUseTabsRouter">
+          <TSwitch v-model="formData.isUseTabsRouter" />
+        </TFormItem>
+        <TFormItem label="菜单自动折叠" name="menuAutoCollapsed">
+          <TSwitch v-model="formData.menuAutoCollapsed" />
+        </TFormItem>
+      </TForm>
       <div class="setting-info">
         <p>请复制后手动修改配置文件: /src/config/style.ts</p>
-        <t-button theme="primary" variant="text" @click="handleCopy">
+        <TButton theme="primary" variant="text" @click="handleCopy">
           复制配置项
-        </t-button>
+        </TButton>
       </div>
     </div>
-  </t-drawer>
+  </TDrawer>
 </template>
-<script setup lang="ts">
-import { useClipboard } from '@vueuse/core';
-import type { PopupVisibleChangeContext } from 'tdesign-vue-next';
-import { MessagePlugin } from 'tdesign-vue-next';
-import { computed, onMounted, ref, watchEffect } from 'vue';
-
-import SettingAutoIcon from '@/assets/assets-setting-auto.svg';
-import SettingDarkIcon from '@/assets/assets-setting-dark.svg';
-import SettingLightIcon from '@/assets/assets-setting-light.svg';
-import ColorContainer from '@/components/color/index.vue';
-import Thumbnail from '@/components/thumbnail/index.vue';
-import { DEFAULT_COLOR_OPTIONS } from '@/config/color';
-import STYLE_CONFIG from '@/config/style';
-import { useSettingStore } from '@/store';
-
-const settingStore = useSettingStore();
-
-const LAYOUT_OPTION = ['side', 'top', 'mix'];
-
-const MODE_OPTIONS = [
-  { type: 'light', text: '明亮' },
-  { type: 'dark', text: '深色' },
-  { type: 'auto', text: '跟随系统' },
-];
-
-const initStyleConfig = () => {
-  const styleConfig = STYLE_CONFIG;
-  for (const key in styleConfig) {
-    if (Object.prototype.hasOwnProperty.call(styleConfig, key)) {
-      (styleConfig[key as keyof typeof STYLE_CONFIG] as any) = settingStore[key as keyof typeof STYLE_CONFIG];
-    }
-  }
-
-  return styleConfig;
-};
-
-const dynamicColor = computed(() => {
-  const isDynamic = DEFAULT_COLOR_OPTIONS.includes(formData.value.brandTheme);
-  return isDynamic ? formData.value.brandTheme : '';
-});
-const formData = ref({ ...initStyleConfig() });
-const isColoPickerDisplay = ref(false);
-
-const showSettingPanel = computed({
-  get() {
-    return settingStore.showSettingPanel;
-  },
-  set(newVal: boolean) {
-    settingStore.updateConfig({
-      showSettingPanel: newVal,
-    });
-  },
-});
-
-const changeColor = (hex: string) => {
-  formData.value.brandTheme = hex;
-};
-
-onMounted(() => {
-  document.querySelector('.dynamic-color-btn').addEventListener('click', () => {
-    isColoPickerDisplay.value = true;
-  });
-});
-
-const onPopupVisibleChange = (visible: boolean, context: PopupVisibleChangeContext) => {
-  if (!visible && context.trigger === 'document') {
-    isColoPickerDisplay.value = visible;
-  }
-};
-
-const handleCopy = () => {
-  const sourceText = JSON.stringify(formData.value, null, 4);
-  const { copy } = useClipboard({ source: sourceText });
-  copy()
-    .then(() => {
-      MessagePlugin.closeAll();
-      MessagePlugin.success('复制成功');
-    })
-    .catch(() => {
-      MessagePlugin.closeAll();
-      MessagePlugin.error('复制失败');
-    });
-};
-const getModeIcon = (mode: string) => {
-  if (mode === 'light') {
-    return SettingLightIcon;
-  }
-  if (mode === 'dark') {
-    return SettingDarkIcon;
-  }
-  return SettingAutoIcon;
-};
-
-const handleCloseDrawer = () => {
-  settingStore.updateConfig({
-    showSettingPanel: false,
-  });
-};
-
-const getThumbnailUrl = (name: string): string => {
-  return `https://tdesign.gtimg.com/tdesign-pro/setting/${name}.png`;
-};
-
-watchEffect(() => {
-  if (formData.value.brandTheme) settingStore.updateConfig(formData.value);
-});
-</script>
 <!-- teleport导致drawer 内 scoped样式问题无法生效 先规避下 -->
 <!-- eslint-disable-next-line vue-scoped-css/enforce-style-type -->
 <style lang="less">

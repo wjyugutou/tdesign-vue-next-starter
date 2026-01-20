@@ -1,80 +1,18 @@
-<template>
-  <div :class="layoutCls">
-    <t-head-menu :class="menuCls" :theme="menuTheme" expand-type="popup" :value="active">
-      <template #logo>
-        <span v-if="showLogo" class="header-logo-container" @click="handleNav('/dashboard/base')">
-          <logo-full class="t-logo" />
-        </span>
-        <div v-else class="header-operate-left">
-          <t-button theme="default" shape="square" variant="text" @click="changeCollapsed">
-            <t-icon class="collapsed-icon" name="view-list" />
-          </t-button>
-          <search :layout="layout" />
-        </div>
-      </template>
-      <template v-if="layout !== 'side'" #default>
-        <menu-content class="header-menu" :nav-data="menu" />
-      </template>
-      <template #operations>
-        <div class="operations-container">
-          <!-- 搜索框 -->
-          <search v-if="layout !== 'side'" :layout="layout" />
-
-          <!-- 全局通知 -->
-          <notice />
-
-          <t-tooltip placement="bottom" :content="代码仓库">
-            <t-button theme="default" shape="square" variant="text" @click="navToGitHub">
-              <t-icon name="logo-github" />
-            </t-button>
-          </t-tooltip>
-          <t-tooltip placement="bottom" :content="帮助文档">
-            <t-button theme="default" shape="square" variant="text" @click="navToHelper">
-              <t-icon name="help-circle" />
-            </t-button>
-          </t-tooltip>
-          <t-dropdown :min-column-width="120" trigger="click">
-            <template #dropdown>
-              <t-dropdown-item class="operations-dropdown-container-item" @click="handleNav('/user/index')">
-                <user-circle-icon />个人中心
-              </t-dropdown-item>
-              <t-dropdown-item class="operations-dropdown-container-item" @click="handleLogout">
-                <poweroff-icon />退出登录
-              </t-dropdown-item>
-            </template>
-            <t-button class="header-user-btn" theme="default" variant="text">
-              <template #icon>
-                <t-icon class="header-user-avatar" name="user-circle" />
-              </template>
-              <div class="header-user-account">{{ user.userInfo.name }}</div>
-              <template #suffix><chevron-down-icon /></template>
-            </t-button>
-          </t-dropdown>
-          <t-tooltip placement="bottom" :content="系统设置">
-            <t-button theme="default" shape="square" variant="text" @click="toggleSettingPanel">
-              <setting-icon />
-            </t-button>
-          </t-tooltip>
-        </div>
-      </template>
-    </t-head-menu>
-  </div>
-</template>
 <script setup lang="ts">
-import { ChevronDownIcon, PoweroffIcon, SettingIcon, UserCircleIcon } from 'tdesign-icons-vue-next';
-import type { PropType } from 'vue';
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import type { PropType } from 'vue'
+import type { MenuRoute, ModeType } from '@/types/interface'
+import { ChevronDownIcon, PoweroffIcon, SettingIcon, UserCircleIcon } from 'tdesign-icons-vue-next'
+import { computed } from 'vue'
 
-import LogoFull from '@/assets/assets-logo-full.svg?component';
-import { prefix } from '@/config/global';
-import { getActive } from '@/router';
-import { useSettingStore, useUserStore } from '@/store';
-import type { MenuRoute, ModeType } from '@/types/interface';
+import { useRouter } from 'vue-router'
+import LogoFull from '@/assets/assets-logo-full.svg?component'
+import { prefix } from '@/config/global'
+import { getActive } from '@/router'
+import { useSettingStore, useUserStore } from '@/store'
 
-import MenuContent from './MenuContent.vue';
-import Notice from './Notice.vue';
-import Search from './Search.vue';
+import MenuContent from './MenuContent.vue'
+import Notice from './Notice.vue'
+import Search from './Search.vue'
 
 const { theme, layout, showLogo, menu, isFixed, isCompact } = defineProps({
   theme: {
@@ -105,21 +43,21 @@ const { theme, layout, showLogo, menu, isFixed, isCompact } = defineProps({
     type: Number,
     default: 3,
   },
-});
+})
 
-const router = useRouter();
-const settingStore = useSettingStore();
-const user = useUserStore();
+const router = useRouter()
+const settingStore = useSettingStore()
+const user = useUserStore()
 
-const toggleSettingPanel = () => {
+function toggleSettingPanel() {
   settingStore.updateConfig({
     showSettingPanel: true,
-  });
-};
+  })
+}
 
-const active = computed(() => getActive());
+const active = computed(() => getActive())
 
-const layoutCls = computed(() => [`${prefix}-header-layout`]);
+const layoutCls = computed(() => [`${prefix}-header-layout`])
 
 const menuCls = computed(() => {
   return [
@@ -129,36 +67,102 @@ const menuCls = computed(() => {
       [`${prefix}-header-menu-fixed-side`]: layout === 'side' && isFixed,
       [`${prefix}-header-menu-fixed-side-compact`]: layout === 'side' && isFixed && isCompact,
     },
-  ];
-});
-const menuTheme = computed(() => theme as ModeType);
+  ]
+})
+const menuTheme = computed(() => theme as ModeType)
 
 // 切换语言
-const changeCollapsed = () => {
+function changeCollapsed() {
   settingStore.updateConfig({
     isSidebarCompact: !settingStore.isSidebarCompact,
-  });
-};
+  })
+}
 
-const handleNav = (url: string) => {
-  router.push(url);
-};
+function handleNav(url: string) {
+  router.push(url)
+}
 
-const handleLogout = () => {
+function handleLogout() {
   router.push({
     path: '/login',
     query: { redirect: encodeURIComponent(router.currentRoute.value.fullPath) },
-  });
-};
+  })
+}
 
-const navToGitHub = () => {
-  window.open('https://github.com/tencent/tdesign-vue-next-starter');
-};
+function navToGitHub() {
+  window.open('https://github.com/tencent/tdesign-vue-next-starter')
+}
 
-const navToHelper = () => {
-  window.open('https://tdesign.tencent.com/starter/docs/vue-next/get-started');
-};
+function navToHelper() {
+  window.open('https://tdesign.tencent.com/starter/docs/vue-next/get-started')
+}
 </script>
+<template>
+  <div :class="layoutCls">
+    <THeadMenu :class="menuCls" :theme="menuTheme" expand-type="popup" :value="active">
+      <template #logo>
+        <span v-if="showLogo" class="header-logo-container" @click="handleNav('/dashboard/base')">
+          <LogoFull class="t-logo" />
+        </span>
+        <div v-else class="header-operate-left">
+          <TButton theme="default" shape="square" variant="text" @click="changeCollapsed">
+            <TIcon class="collapsed-icon" name="view-list" />
+          </TButton>
+          <search :layout="layout" />
+        </div>
+      </template>
+      <template v-if="layout !== 'side'" #default>
+        <MenuContent class="header-menu" :nav-data="menu" />
+      </template>
+      <template #operations>
+        <div class="operations-container">
+          <!-- 搜索框 -->
+          <search v-if="layout !== 'side'" :layout="layout" />
+
+          <!-- 全局通知 -->
+          <Notice />
+
+          <TTooltip placement="bottom" :content="代码仓库">
+            <TButton theme="default" shape="square" variant="text" @click="navToGitHub">
+              <TIcon name="logo-github" />
+            </TButton>
+          </TTooltip>
+          <TTooltip placement="bottom" :content="帮助文档">
+            <TButton theme="default" shape="square" variant="text" @click="navToHelper">
+              <TIcon name="help-circle" />
+            </TButton>
+          </TTooltip>
+          <TDropdown :min-column-width="120" trigger="click">
+            <template #dropdown>
+              <TDropdownItem class="operations-dropdown-container-item" @click="handleNav('/user/index')">
+                <UserCircleIcon />个人中心
+              </TDropdownItem>
+              <TDropdownItem class="operations-dropdown-container-item" @click="handleLogout">
+                <PoweroffIcon />退出登录
+              </TDropdownItem>
+            </template>
+            <TButton class="header-user-btn" theme="default" variant="text">
+              <template #icon>
+                <TIcon class="header-user-avatar" name="user-circle" />
+              </template>
+              <div class="header-user-account">
+                {{ user.userInfo.name }}
+              </div>
+              <template #suffix>
+                <ChevronDownIcon />
+              </template>
+            </TButton>
+          </TDropdown>
+          <TTooltip placement="bottom" :content="系统设置">
+            <TButton theme="default" shape="square" variant="text" @click="toggleSettingPanel">
+              <SettingIcon />
+            </TButton>
+          </TTooltip>
+        </div>
+      </template>
+    </THeadMenu>
+  </div>
+</template>
 <style lang="less" scoped>
 .@{starter-prefix}-header {
   &-menu-fixed {

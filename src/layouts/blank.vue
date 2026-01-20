@@ -1,6 +1,6 @@
 <template>
   <div class="tdesign-wrapper">
-    <router-view />
+    <RouterView />
   </div>
 </template>
 <style lang="less" scoped>

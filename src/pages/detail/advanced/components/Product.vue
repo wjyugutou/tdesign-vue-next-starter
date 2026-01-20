@@ -1,32 +1,46 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  props: {
+    data: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+  },
+})
+</script>
 <template>
   <div class="operator-block operator-gap">
     <div class="operator-content">
       <div class="operator-title">
-        <t-icon name="cart" class="operator-title-icon" />
+        <TIcon name="cart" class="operator-title-icon" />
         <h1>{{ data.name }}</h1>
         <div class="operator-title-subtitle">
           {{ data.subtitle }}
         </div>
         <div class="operator-title-tags">
-          <t-tag class="operator-title-tag" theme="success" size="medium">
+          <TTag class="operator-title-tag" theme="success" size="medium">
             {{ data.size }}
-          </t-tag>
-          <t-tag class="operator-title-tag" size="medium">
+          </TTag>
+          <TTag class="operator-title-tag" size="medium">
             {{ data.cpu }}
-          </t-tag>
-          <t-tag class="operator-title-tag" size="medium">
+          </TTag>
+          <TTag class="operator-title-tag" size="medium">
             {{ data.memory }}
-          </t-tag>
+          </TTag>
         </div>
       </div>
       <div class="operator-item">
         <span class="operator-item-info">{{ data.info }}</span>
-        <t-icon class="operator-item-icon" name="chevron-right" size="small" style="color: rgb(0 0 0 / 26%)" />
+        <TIcon class="operator-item-icon" name="chevron-right" size="small" style="color: rgb(0 0 0 / 26%)" />
       </div>
     </div>
     <div class="operator-footer">
       <span class="operator-footer-percentage">{{ data.use }} / {{ data.stock }}（台）</span>
-      <t-progress
+      <TProgress
         class="operator-progress"
         theme="line"
         :percentage="(data.use / data.stock) * 100"
@@ -37,20 +51,6 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  props: {
-    data: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
-  },
-});
-</script>
 <style lang="less" scoped>
 .operator-block {
   position: relative;

@@ -1,20 +1,18 @@
-/* eslint-disable simple-import-sort/imports */
-import { createApp } from 'vue';
-import TDesign from 'tdesign-vue-next';
+import TDesign from 'tdesign-vue-next'
+import { createApp } from 'vue'
 
-import App from './App.vue';
-import router from './router';
-import { store } from './store';
+import App from './App.vue'
+import router from './router'
+import { store } from './store'
 
-import 'tdesign-vue-next/es/style/index.css';
-import '@/style/index.less';
-import './permission';
+import 'tdesign-vue-next/es/style/index.css'
+import '@/style/index.less'
+import './permission'
 
-const app = createApp(App);
+const app = createApp(App)
 
-app.use(TDesign);
-app.use(store);
-app.use(router);
+app.use(TDesign)
+app.use(store)
+app.use(router)
 
-app.mount('#app');
-
+app.mount('#app')

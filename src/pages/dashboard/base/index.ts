@@ -1,14 +1,13 @@
-import dayjs from 'dayjs';
-import type { EChartsOption } from 'echarts';
+import type { EChartsOption } from 'echarts'
+import type { TChartColor } from '@/config/color'
 
-import type { TChartColor } from '@/config/color';
-import { t } from '@/locales/index';
-import { getRandomArray } from '@/utils/charts';
-import { getChartListColor } from '@/utils/color';
+import dayjs from 'dayjs'
+import { getRandomArray } from '@/utils/charts'
+import { getChartListColor } from '@/utils/color'
 
 /** 首页 dashboard 折线图 */
 export function constructInitDashboardDataset(type: string) {
-  const dateArray: Array<string> = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+  const dateArray: Array<string> = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 
   const datasetAxis = {
     xAxis: {
@@ -26,7 +25,7 @@ export function constructInitDashboardDataset(type: string) {
       right: 0,
       bottom: 0,
     },
-  };
+  }
 
   if (type === 'line') {
     const lineDataset = {
@@ -50,8 +49,8 @@ export function constructInitDashboardDataset(type: string) {
           },
         },
       ],
-    };
-    return lineDataset;
+    }
+    return lineDataset
   }
   const barDataset = {
     ...datasetAxis,
@@ -86,8 +85,8 @@ export function constructInitDashboardDataset(type: string) {
         barWidth: 9,
       },
     ],
-  };
-  return barDataset;
+  }
+  return barDataset
 }
 
 /** 柱状图数据源 */
@@ -96,25 +95,26 @@ export function constructInitDataset({
   placeholderColor,
   borderColor,
 }: { dateTime: Array<string> } & TChartColor) {
-  const divideNum = 10;
-  const timeArray = [];
-  const inArray = [];
-  const outArray = [];
+  const divideNum = 10
+  const timeArray = []
+  const inArray = []
+  const outArray = []
   for (let i = 0; i < divideNum; i++) {
     if (dateTime.length > 0) {
-      const dateAbsTime: number = (new Date(dateTime[1]).getTime() - new Date(dateTime[0]).getTime()) / divideNum;
-      const enhandTime: number = new Date(dateTime[0]).getTime() + dateAbsTime * i;
-      timeArray.push(dayjs(enhandTime).format('YYYY-MM-DD'));
-    } else {
+      const dateAbsTime: number = (new Date(dateTime[1]).getTime() - new Date(dateTime[0]).getTime()) / divideNum
+      const enhandTime: number = new Date(dateTime[0]).getTime() + dateAbsTime * i
+      timeArray.push(dayjs(enhandTime).format('YYYY-MM-DD'))
+    }
+    else {
       timeArray.push(
         dayjs()
           .subtract(divideNum - i, 'day')
           .format('YYYY-MM-DD'),
-      );
+      )
     }
 
-    inArray.push(getRandomArray().toString());
-    outArray.push(getRandomArray().toString());
+    inArray.push(getRandomArray().toString())
+    outArray.push(getRandomArray().toString())
   }
 
   const dataset = {
@@ -164,23 +164,23 @@ export function constructInitDataset({
       left: 'center',
       bottom: '0',
       orient: 'horizontal',
-      data: [t('pages.dashboardBase.chart.thisMonth'), t('pages.dashboardBase.chart.lastMonth')],
+      data: ['本月', '上月'],
     },
     series: [
       {
-        name: t('pages.dashboardBase.chart.thisMonth'),
+        name: '本月',
         data: outArray,
         type: 'bar',
       },
       {
-        name: t('pages.dashboardBase.chart.lastMonth'),
+        name: '上月',
         data: inArray,
         type: 'bar',
       },
     ],
-  };
+  }
 
-  return dataset;
+  return dataset
 }
 
 /**
@@ -195,26 +195,27 @@ export function getLineChartDataSet({
   placeholderColor,
   borderColor,
 }: { dateTime?: Array<string> } & TChartColor) {
-  const divideNum = 10;
-  const timeArray = [];
-  const inArray = [];
-  const outArray = [];
+  const divideNum = 10
+  const timeArray = []
+  const inArray = []
+  const outArray = []
   for (let i = 0; i < divideNum; i++) {
     if (dateTime.length > 0) {
-      const dateAbsTime: number = (new Date(dateTime[1]).getTime() - new Date(dateTime[0]).getTime()) / divideNum;
-      const enhandTime: number = new Date(dateTime[0]).getTime() + dateAbsTime * i;
+      const dateAbsTime: number = (new Date(dateTime[1]).getTime() - new Date(dateTime[0]).getTime()) / divideNum
+      const enhandTime: number = new Date(dateTime[0]).getTime() + dateAbsTime * i
       // console.log('dateAbsTime..', dateAbsTime, enhandTime);
-      timeArray.push(dayjs(enhandTime).format('MM-DD'));
-    } else {
+      timeArray.push(dayjs(enhandTime).format('MM-DD'))
+    }
+    else {
       timeArray.push(
         dayjs()
           .subtract(divideNum - i, 'day')
           .format('MM-DD'),
-      );
+      )
     }
 
-    inArray.push(getRandomArray().toString());
-    outArray.push(getRandomArray().toString());
+    inArray.push(getRandomArray().toString())
+    outArray.push(getRandomArray().toString())
   }
 
   const dataSet = {
@@ -233,7 +234,7 @@ export function getLineChartDataSet({
       left: 'center',
       bottom: '0',
       orient: 'horizontal', // legend 横向布局。
-      data: [t('pages.dashboardBase.chart.thisMonth'), t('pages.dashboardBase.chart.lastMonth')],
+      data: ['本月', '上月'],
       textStyle: {
         fontSize: 12,
         color: placeholderColor,
@@ -265,7 +266,7 @@ export function getLineChartDataSet({
     },
     series: [
       {
-        name: t('pages.dashboardBase.chart.thisMonth'),
+        name: '本月',
         data: outArray,
         type: 'line',
         smooth: false,
@@ -281,7 +282,7 @@ export function getLineChartDataSet({
         },
       },
       {
-        name: t('pages.dashboardBase.chart.lastMonth'),
+        name: '上月',
         data: inArray,
         type: 'line',
         smooth: false,
@@ -294,8 +295,8 @@ export function getLineChartDataSet({
         },
       },
     ],
-  };
-  return dataSet;
+  }
+  return dataSet
 }
 
 /**
@@ -389,11 +390,11 @@ export function getPieChartDataSet({
         data: [
           {
             value: 1048,
-            name: t('pages.dashboardBase.topPanel.analysis.channel1'),
+            name: '渠道1',
           },
-          { value: radius * 7, name: t('pages.dashboardBase.topPanel.analysis.channel2') },
+          { value: radius * 7, name: '渠道2' },
         ],
       },
     ],
-  };
+  }
 }

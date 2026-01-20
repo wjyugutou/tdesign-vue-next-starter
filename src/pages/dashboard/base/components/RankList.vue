@@ -1,14 +1,104 @@
+<script setup lang="ts">
+import type { TdBaseTableProps } from 'tdesign-vue-next'
+
+import Trend from '@/components/trend/index.vue'
+
+import { BUY_TEND_LIST, SALE_TEND_LIST } from '../constants'
+
+const SALE_COLUMNS: TdBaseTableProps['columns'] = [
+  {
+    align: 'center',
+    colKey: 'index',
+    title: '排名',
+    width: 70,
+    fixed: 'left',
+  },
+  {
+    align: 'left',
+    ellipsis: true,
+    colKey: 'productName',
+    title: '商品名称',
+    width: 150,
+  },
+  {
+    align: 'center',
+    colKey: 'growUp',
+    width: 70,
+    title: '增长',
+  },
+  {
+    align: 'center',
+    colKey: 'count',
+    title: '销售量',
+    width: 70,
+  },
+  {
+    align: 'center',
+    colKey: 'operation',
+    title: '操作',
+    width: 70,
+    fixed: 'right',
+  },
+]
+
+const BUY_COLUMNS: TdBaseTableProps['columns'] = [
+  {
+    align: 'center',
+    colKey: 'index',
+    title: '排名',
+    width: 70,
+    fixed: 'left',
+  },
+  {
+    align: 'left',
+    ellipsis: true,
+    colKey: 'productName',
+    width: 150,
+    title: '商品名称',
+  },
+  {
+    align: 'center',
+    colKey: 'growUp',
+    width: 70,
+    title: '增长',
+  },
+  {
+    align: 'center',
+    colKey: 'count',
+    title: '购买量',
+    width: 70,
+  },
+  {
+    align: 'center',
+    colKey: 'operation',
+    title: '操作',
+    width: 70,
+    fixed: 'right',
+  },
+]
+
+function rehandleClickOp(val: MouseEvent) {
+  console.log(val)
+}
+function getRankClass(index: number) {
+  return ['dashboard-rank', { 'dashboard-rank__top': index < 3 }]
+}
+</script>
 <template>
-  <t-row :gutter="16" class="row-container">
-    <t-col :xs="12" :xl="6">
-      <t-card :title="t('pages.dashboardBase.rankList.title')" class="dashboard-rank-card" :bordered="false">
+  <TRow :gutter="16" class="row-container">
+    <TCol :xs="12" :xl="6">
+      <TCard title="销售排名" class="dashboard-rank-card" :bordered="false">
         <template #actions>
-          <t-radio-group default-value="dateVal" variant="default-filled">
-            <t-radio-button value="dateVal">{{ t('pages.dashboardBase.rankList.week') }}</t-radio-button>
-            <t-radio-button value="monthVal">{{ t('pages.dashboardBase.rankList.month') }}</t-radio-button>
-          </t-radio-group>
+          <TRadioGroup default-value="dateVal" variant="default-filled">
+            <TRadioButton value="dateVal">
+              本周
+            </TRadioButton>
+            <TRadioButton value="monthVal">
+              本月
+            </TRadioButton>
+          </TRadioGroup>
         </template>
-        <t-table :data="SALE_TEND_LIST" :columns="SALE_COLUMNS" row-key="productName">
+        <TTable :data="SALE_TEND_LIST" :columns="SALE_COLUMNS" row-key="productName">
           <template #index="{ rowIndex }">
             <span :class="getRankClass(rowIndex)">
               {{ rowIndex + 1 }}
@@ -16,131 +106,48 @@
           </template>
           <template #growUp="{ row }">
             <span>
-              <trend :type="row.growUp > 0 ? 'up' : 'down'" :describe="Math.abs(row.growUp)" />
+              <Trend :type="row.growUp > 0 ? 'up' : 'down'" :describe="Math.abs(row.growUp)" />
             </span>
           </template>
           <template #operation="slotProps">
-            <t-link theme="primary" @click="rehandleClickOp(slotProps)">{{
-              t('pages.dashboardBase.rankList.info')
-            }}</t-link>
+            <TLink theme="primary" @click="rehandleClickOp(slotProps)">
+              查看详情
+            </TLink>
           </template>
-        </t-table>
-      </t-card>
-    </t-col>
-    <t-col :xs="12" :xl="6">
-      <t-card :title="t('pages.dashboardBase.rankList.title')" class="dashboard-rank-card" :bordered="false">
+        </TTable>
+      </TCard>
+    </TCol>
+    <TCol :xs="12" :xl="6">
+      <TCard title="购买排名" class="dashboard-rank-card" :bordered="false">
         <template #actions>
-          <t-radio-group default-value="dateVal" variant="default-filled">
-            <t-radio-button value="dateVal">{{ t('pages.dashboardBase.rankList.week') }}</t-radio-button>
-            <t-radio-button value="monthVal">{{ t('pages.dashboardBase.rankList.month') }}</t-radio-button>
-          </t-radio-group>
+          <TRadioGroup default-value="dateVal" variant="default-filled">
+            <TRadioButton value="dateVal">
+              本周
+            </TRadioButton>
+            <TRadioButton value="monthVal">
+              本月
+            </TRadioButton>
+          </TRadioGroup>
         </template>
-        <t-table :data="BUY_TEND_LIST" :columns="BUY_COLUMNS" row-key="productName">
+        <TTable :data="BUY_TEND_LIST" :columns="BUY_COLUMNS" row-key="productName">
           <template #index="{ rowIndex }">
             <span :class="getRankClass(rowIndex)">
               {{ rowIndex + 1 }}
             </span>
           </template>
           <template #growUp="{ row }">
-            <trend :type="row.growUp > 0 ? 'up' : 'down'" :describe="Math.abs(row.growUp)" />
+            <Trend :type="row.growUp > 0 ? 'up' : 'down'" :describe="Math.abs(row.growUp)" />
           </template>
           <template #operation="slotProps">
-            <t-link theme="primary" @click="rehandleClickOp(slotProps)">{{
-              t('pages.dashboardBase.rankList.info')
-            }}</t-link>
+            <TLink theme="primary" @click="rehandleClickOp(slotProps)">
+              查看详情
+            </TLink>
           </template>
-        </t-table>
-      </t-card>
-    </t-col>
-  </t-row>
+        </TTable>
+      </TCard>
+    </TCol>
+  </TRow>
 </template>
-<script setup lang="ts">
-import type { TdBaseTableProps } from 'tdesign-vue-next';
-
-import Trend from '@/components/trend/index.vue';
-import { t } from '@/locales';
-
-import { BUY_TEND_LIST, SALE_TEND_LIST } from '../constants';
-
-const SALE_COLUMNS: TdBaseTableProps['columns'] = [
-  {
-    align: 'center',
-    colKey: 'index',
-    title: t('pages.dashboardBase.saleColumns.index'),
-    width: 70,
-    fixed: 'left',
-  },
-  {
-    align: 'left',
-    ellipsis: true,
-    colKey: 'productName',
-    title: t('pages.dashboardBase.saleColumns.productName'),
-    width: 150,
-  },
-  {
-    align: 'center',
-    colKey: 'growUp',
-    width: 70,
-    title: t('pages.dashboardBase.saleColumns.growUp'),
-  },
-  {
-    align: 'center',
-    colKey: 'count',
-    title: t('pages.dashboardBase.saleColumns.count'),
-    width: 70,
-  },
-  {
-    align: 'center',
-    colKey: 'operation',
-    title: t('pages.dashboardBase.saleColumns.operation'),
-    width: 70,
-    fixed: 'right',
-  },
-];
-
-const BUY_COLUMNS: TdBaseTableProps['columns'] = [
-  {
-    align: 'center',
-    colKey: 'index',
-    title: t('pages.dashboardBase.buyColumns.index'),
-    width: 70,
-    fixed: 'left',
-  },
-  {
-    align: 'left',
-    ellipsis: true,
-    colKey: 'productName',
-    width: 150,
-    title: t('pages.dashboardBase.buyColumns.productName'),
-  },
-  {
-    align: 'center',
-    colKey: 'growUp',
-    width: 70,
-    title: t('pages.dashboardBase.buyColumns.growUp'),
-  },
-  {
-    align: 'center',
-    colKey: 'count',
-    title: t('pages.dashboardBase.buyColumns.count'),
-    width: 70,
-  },
-  {
-    align: 'center',
-    colKey: 'operation',
-    title: t('pages.dashboardBase.buyColumns.operation'),
-    width: 70,
-    fixed: 'right',
-  },
-];
-
-const rehandleClickOp = (val: MouseEvent) => {
-  console.log(val);
-};
-const getRankClass = (index: number) => {
-  return ['dashboard-rank', { 'dashboard-rank__top': index < 3 }];
-};
-</script>
 <style lang="less" scoped>
 .dashboard-rank-card {
   padding: var(--td-comp-paddingTB-xxl) var(--td-comp-paddingLR-xxl);

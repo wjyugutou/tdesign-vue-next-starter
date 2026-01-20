@@ -1,83 +1,90 @@
+<script setup lang="ts">
+import type { NotificationItem } from '@/types/interface'
+import { storeToRefs } from 'pinia'
+
+import { useRouter } from 'vue-router'
+import { useNotificationStore } from '@/store'
+
+const router = useRouter()
+const store = useNotificationStore()
+const { msgData, unreadMsg } = storeToRefs(store)
+
+function setRead(type: string, item?: NotificationItem) {
+  const changeMsg = msgData.value
+  if (type === 'all') {
+    changeMsg.forEach((e) => {
+      e.status = false
+    })
+  }
+  else {
+    changeMsg.forEach((e) => {
+      if (e.id === item?.id) {
+        e.status = false
+      }
+    })
+  }
+  store.setMsgData(changeMsg)
+}
+
+function goDetail() {
+  router.push('/detail/secondary')
+}
+</script>
 <template>
-  <t-popup expand-animation placement="bottom-right" trigger="click">
+  <TPopup expand-animation placement="bottom-right" trigger="click">
     <template #content>
       <div class="header-msg">
         <div class="header-msg-top">
           <p>通知中心</p>
-          <t-button
+          <TButton
             v-if="unreadMsg.length > 0"
             class="clear-btn"
             variant="text"
             theme="primary"
             @click="setRead('all')"
-            >清空</t-button
           >
+            清空
+          </TButton>
         </div>
-        <t-list v-if="unreadMsg.length > 0" class="narrow-scrollbar" :split="false">
-          <t-list-item v-for="(item, index) in unreadMsg" :key="index">
+        <TList v-if="unreadMsg.length > 0" class="narrow-scrollbar" :split="false">
+          <TListItem v-for="(item, index) in unreadMsg" :key="index">
             <div>
-              <p class="msg-content">{{ item.content }}</p>
-              <p class="msg-type">{{ item.type }}</p>
+              <p class="msg-content">
+                {{ item.content }}
+              </p>
+              <p class="msg-type">
+                {{ item.type }}
+              </p>
             </div>
-            <p class="msg-time">{{ item.date }}</p>
+            <p class="msg-time">
+              {{ item.date }}
+            </p>
             <template #action>
-              <t-button size="small" variant="outline" @click="setRead('radio', item)">
-            设为已读
-          </t-button>
+              <TButton size="small" variant="outline" @click="setRead('radio', item)">
+                设为已读
+              </TButton>
             </template>
-          </t-list-item>
-        </t-list>
+          </TListItem>
+        </TList>
 
         <div v-else class="empty-list">
-          <img src="https://tdesign.gtimg.com/pro-template/personal/nothing.png" alt="空" />
+          <img src="https://tdesign.gtimg.com/pro-template/personal/nothing.png" alt="空">
           <p>空</p>
         </div>
         <div v-if="unreadMsg.length > 0" class="header-msg-bottom">
-          <t-button class="header-msg-bottom-link" variant="text" theme="default" block @click="goDetail">
+          <TButton class="header-msg-bottom-link" variant="text" theme="default" block @click="goDetail">
             查看全部
-          </t-button>
+          </TButton>
         </div>
       </div>
     </template>
-    <t-badge :count="unreadMsg.length" :offset="[4, 4]">
-      <t-button theme="default" shape="square" variant="text">
-        <t-icon name="mail" />
-      </t-button>
-    </t-badge>
-  </t-popup>
+    <TBadge :count="unreadMsg.length" :offset="[4, 4]">
+      <TButton theme="default" shape="square" variant="text">
+        <TIcon name="mail" />
+      </TButton>
+    </TBadge>
+  </TPopup>
 </template>
-<script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
-
-
-import { useNotificationStore } from '@/store';
-import type { NotificationItem } from '@/types/interface';
-
-const router = useRouter();
-const store = useNotificationStore();
-const { msgData, unreadMsg } = storeToRefs(store);
-
-const setRead = (type: string, item?: NotificationItem) => {
-  const changeMsg = msgData.value;
-  if (type === 'all') {
-    changeMsg.forEach((e) => {
-      e.status = false;
-    });
-  } else {
-    changeMsg.forEach((e) => {
-      if (e.id === item?.id) {
-        e.status = false;
-      }
-    });
-  }
-  store.setMsgData(changeMsg);
-};
-
-const goDetail = () => {
-  router.push('/detail/secondary');
-};
-</script>
 <style lang="less" scoped>
 .header-msg {
   width: 400px;

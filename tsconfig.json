@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
@@ -11,9 +12,10 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["esnext", "dom"],
-    "types": ["vite/client"],
+    "types": [
+      "vite/client",
+    ],
     "noEmit": true,
-    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     },
@@ -24,6 +26,7 @@
     "alwaysStrict": true
   },
   "include": [
+    "src/types/**/*.d.ts",
     "**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",

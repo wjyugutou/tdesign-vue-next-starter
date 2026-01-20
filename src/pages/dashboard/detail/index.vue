@@ -1,26 +1,128 @@
+<script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+import { LineChart, ScatterChart } from 'echarts/charts'
+import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import { computed, nextTick, onDeactivated, onMounted, watch } from 'vue'
+
+import ProductCard from '@/components/product-card/index.vue'
+import Trend from '@/components/trend/index.vue'
+import { useSettingStore } from '@/store'
+import { changeChartsTheme } from '@/utils/color'
+import { LAST_7_DAYS } from '@/utils/date'
+
+import { PANE_LIST_DATA, PRODUCT_LIST } from './constants'
+import { getFolderLineDataSet, getScatterDataSet } from './index'
+
+defineOptions({
+  name: 'DashboardDetail',
+})
+echarts.use([GridComponent, LegendComponent, TooltipComponent, LineChart, ScatterChart, CanvasRenderer])
+
+const store = useSettingStore()
+const chartColors = computed(() => store.chartColors)
+
+// lineChart logic
+let lineContainer: HTMLElement
+let lineChart: echarts.ECharts
+function renderLineChart() {
+  lineContainer = document.getElementById('lineContainer')
+  lineChart = echarts.init(lineContainer)
+  lineChart.setOption(getFolderLineDataSet({ ...chartColors.value }))
+}
+
+// scatterChart logic
+let scatterContainer: HTMLElement
+let scatterChart: echarts.ECharts
+function renderScatterChart() {
+  scatterContainer = document.getElementById('scatterContainer')
+  scatterChart = echarts.init(scatterContainer)
+  scatterChart.setOption(getScatterDataSet({ ...chartColors.value }))
+}
+
+// chartSize update
+function updateContainer() {
+  lineChart?.resize({
+    width: lineContainer.clientWidth,
+    height: lineContainer.clientHeight,
+  })
+  scatterChart?.resize({
+    width: scatterContainer.clientWidth,
+    height: scatterContainer.clientHeight,
+  })
+}
+
+function renderCharts() {
+  renderScatterChart()
+  renderLineChart()
+}
+
+onMounted(() => {
+  renderCharts()
+  nextTick(() => {
+    updateContainer()
+  })
+})
+
+const { width, height } = useWindowSize()
+watch([width, height], () => {
+  updateContainer()
+})
+
+const storeModeWatch = watch(
+  () => store.mode,
+  () => {
+    renderCharts()
+  },
+)
+
+const storeBrandThemeWatch = watch(
+  () => store.brandTheme,
+  () => {
+    changeChartsTheme([lineChart, scatterChart])
+  },
+)
+
+function onSatisfyChange() {
+  scatterChart.setOption(getScatterDataSet({ ...chartColors.value }))
+}
+
+function onMaterialChange(value: string[]) {
+  const chartColors = computed(() => store.chartColors)
+  lineChart.setOption(getFolderLineDataSet({ dateTime: value, ...chartColors.value }))
+}
+
+onDeactivated(() => {
+  storeModeWatch()
+  storeBrandThemeWatch()
+})
+</script>
 <template>
   <div class="dashboard-panel-detail">
-    <t-card :title="t('pages.dashboardDetail.topPanel.title')" class="dashboard-detail-card" :bordered="false">
-      <t-row :gutter="[16, 16]">
-        <t-col v-for="(item, index) in PANE_LIST_DATA" :key="index" :xs="6" :xl="3">
-          <t-card class="dashboard-list-card" :description="item.title">
-            <div class="dashboard-list-card__number">{{ item.number }}</div>
+    <TCard title="本月采购申请情况" class="dashboard-detail-card" :bordered="false">
+      <TRow :gutter="[16, 16]">
+        <TCol v-for="(item, index) in PANE_LIST_DATA" :key="index" :xs="6" :xl="3">
+          <TCard class="dashboard-list-card" :description="item.title">
+            <div class="dashboard-list-card__number">
+              {{ item.number }}
+            </div>
             <div class="dashboard-list-card__text">
               <div class="dashboard-list-card__text-left">
-                {{ t('pages.dashboardDetail.topPanel.quarter') }}
-                <trend class="icon" :type="item.upTrend ? 'up' : 'down'" :describe="item.upTrend || item.downTrend" />
+                环比
+                <Trend class="icon" :type="item.upTrend ? 'up' : 'down'" :describe="item.upTrend || item.downTrend" />
               </div>
-              <t-icon name="chevron-right" />
+              <TIcon name="chevron-right" />
             </div>
-          </t-card>
-        </t-col>
-      </t-row>
-    </t-card>
-    <t-row :gutter="[16, 16]" class="row-margin">
-      <t-col :xs="12" :xl="9">
-        <t-card class="dashboard-detail-card" :title="t('pages.dashboardDetail.procurement.title')" :bordered="false">
+          </TCard>
+        </TCol>
+      </TRow>
+    </TCard>
+    <TRow :gutter="[16, 16]" class="row-margin">
+      <TCol :xs="12" :xl="9">
+        <TCard title="采购申请趋势" class="dashboard-detail-card" :bordered="false">
           <template #actions>
-            <t-date-range-picker
+            <TDateRangePicker
               class="card-date-picker-container"
               :default-value="LAST_7_DAYS"
               theme="primary"
@@ -30,25 +132,25 @@
             />
           </template>
           <div id="lineContainer" style="width: 100%; height: 416px" />
-        </t-card>
-      </t-col>
-      <t-col :xs="12" :xl="3">
-        <product-card
+        </TCard>
+      </TCol>
+      <TCol :xs="12" :xl="3">
+        <ProductCard
           v-for="(item, index) in PRODUCT_LIST"
           :key="index"
           :product="item"
           class="product-card"
           :class="{ 'row-margin': index !== 0 }"
         />
-      </t-col>
-    </t-row>
-    <t-card
+      </TCol>
+    </TRow>
+    <TCard
       class="dashboard-detail-card row-margin"
-      :title="t('pages.dashboardDetail.satisfaction.title')"
+      title="采购申请满意度"
       :bordered="false"
     >
       <template #actions>
-        <t-date-range-picker
+        <TDateRangePicker
           class="card-date-picker-container"
           :default-value="LAST_7_DAYS"
           theme="primary"
@@ -56,113 +158,14 @@
           style="display: inline-block; margin-right: var(--td-comp-margin-s); width: 248px"
           @change="onSatisfyChange"
         />
-        <t-button class="card-date-button"> {{ t('pages.dashboardDetail.satisfaction.export') }} </t-button>
+        <TButton class="card-date-button">
+          导出
+        </TButton>
       </template>
       <div id="scatterContainer" style="width: 100%; height: 434px" />
-    </t-card>
+    </TCard>
   </div>
 </template>
-<script setup lang="ts">
-import { useWindowSize } from '@vueuse/core';
-import { LineChart, ScatterChart } from 'echarts/charts';
-import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
-import * as echarts from 'echarts/core';
-import { CanvasRenderer } from 'echarts/renderers';
-import { computed, nextTick, onDeactivated, onMounted, watch } from 'vue';
-
-import ProductCard from '@/components/product-card/index.vue';
-import Trend from '@/components/trend/index.vue';
-import { t } from '@/locales';
-import { useSettingStore } from '@/store';
-import { changeChartsTheme } from '@/utils/color';
-import { LAST_7_DAYS } from '@/utils/date';
-
-import { PANE_LIST_DATA, PRODUCT_LIST } from './constants';
-import { getFolderLineDataSet, getScatterDataSet } from './index';
-
-defineOptions({
-  name: 'DashboardDetail',
-});
-echarts.use([GridComponent, LegendComponent, TooltipComponent, LineChart, ScatterChart, CanvasRenderer]);
-
-const store = useSettingStore();
-const chartColors = computed(() => store.chartColors);
-
-// lineChart logic
-let lineContainer: HTMLElement;
-let lineChart: echarts.ECharts;
-const renderLineChart = () => {
-  lineContainer = document.getElementById('lineContainer');
-  lineChart = echarts.init(lineContainer);
-  lineChart.setOption(getFolderLineDataSet({ ...chartColors.value }));
-};
-
-// scatterChart logic
-let scatterContainer: HTMLElement;
-let scatterChart: echarts.ECharts;
-const renderScatterChart = () => {
-  scatterContainer = document.getElementById('scatterContainer');
-  scatterChart = echarts.init(scatterContainer);
-  scatterChart.setOption(getScatterDataSet({ ...chartColors.value }));
-};
-
-// chartSize update
-const updateContainer = () => {
-  lineChart?.resize({
-    width: lineContainer.clientWidth,
-    height: lineContainer.clientHeight,
-  });
-  scatterChart?.resize({
-    width: scatterContainer.clientWidth,
-    height: scatterContainer.clientHeight,
-  });
-};
-
-const renderCharts = () => {
-  renderScatterChart();
-  renderLineChart();
-};
-
-onMounted(() => {
-  renderCharts();
-  nextTick(() => {
-    updateContainer();
-  });
-});
-
-const { width, height } = useWindowSize();
-watch([width, height], () => {
-  updateContainer();
-});
-
-onDeactivated(() => {
-  storeModeWatch();
-  storeBrandThemeWatch();
-});
-
-const storeModeWatch = watch(
-  () => store.mode,
-  () => {
-    renderCharts();
-  },
-);
-
-const storeBrandThemeWatch = watch(
-  () => store.brandTheme,
-  () => {
-    changeChartsTheme([lineChart, scatterChart]);
-  },
-);
-
-const onSatisfyChange = () => {
-  scatterChart.setOption(getScatterDataSet({ ...chartColors.value }));
-};
-
-const onMaterialChange = (value: string[]) => {
-  const chartColors = computed(() => store.chartColors);
-  lineChart.setOption(getFolderLineDataSet({ dateTime: value, ...chartColors.value }));
-};
-</script>
 <style lang="less" scoped>
 .row-margin {
   margin-top: 16px;

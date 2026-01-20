@@ -1,22 +1,119 @@
+<script setup lang="ts">
+import type { FormData } from './components/DialogForm.vue'
+import type { CardProductType } from '@/components/product-card/index.vue'
+import { SearchIcon } from 'tdesign-icons-vue-next'
+
+import { MessagePlugin } from 'tdesign-vue-next'
+import { computed, onMounted, ref } from 'vue'
+import { getCardList } from '@/api/list'
+import ProductCard from '@/components/product-card/index.vue'
+
+import { t } from '@/locales'
+import DialogForm from './components/DialogForm.vue'
+
+defineOptions({
+  name: 'ListCard',
+})
+
+const INITIAL_DATA: FormData = {
+  name: '',
+  status: '',
+  description: '',
+  type: '0',
+  mark: '',
+  amount: 0,
+}
+
+const pagination = ref({ current: 1, pageSize: 12, total: 0 })
+const deleteProduct = ref(undefined)
+
+const productList = ref([])
+const dataLoading = ref(true)
+
+async function fetchData() {
+  try {
+    const { list } = await getCardList()
+    productList.value = list
+    pagination.value = {
+      ...pagination.value,
+      total: list.length,
+    }
+  }
+  catch (e) {
+    console.log(e)
+  }
+  finally {
+    dataLoading.value = false
+  }
+}
+
+const confirmBody = computed(() =>
+  deleteProduct.value ? `确认删除后${deleteProduct.value.name}的所有产品信息将被清空, 且无法恢复` : '',
+)
+
+onMounted(() => {
+  fetchData()
+})
+
+const formDialogVisible = ref(false)
+const searchValue = ref('')
+const confirmVisible = ref(false)
+const formData = ref({ ...INITIAL_DATA })
+
+function onPageSizeChange(size: number) {
+  pagination.value.pageSize = size
+  pagination.value.current = 1
+}
+function onCurrentChange(current: number) {
+  pagination.value.current = current
+}
+function handleDeleteItem(product: CardProductType) {
+  confirmVisible.value = true
+  deleteProduct.value = product
+}
+function onConfirmDelete() {
+  const { index } = deleteProduct.value
+  productList.value.splice(index - 1, 1)
+  confirmVisible.value = false
+  MessagePlugin.success('删除成功')
+}
+function onCancel() {
+  deleteProduct.value = undefined
+  formData.value = { ...INITIAL_DATA }
+}
+function handleManageProduct(product: CardProductType) {
+  formDialogVisible.value = true
+  formData.value = {
+    name: product.name,
+    status: product?.isSetup ? '1' : '0',
+    description: product.description,
+    type: product.type.toString(),
+    mark: '',
+    amount: 0,
+  }
+}
+</script>
 <template>
   <div>
     <div class="list-card-operation">
-      <t-button @click="formDialogVisible = true"> {{ t('pages.listCard.create') }} </t-button>
+      <TButton @click="formDialogVisible = true">
+        {{ t('pages.listCard.create') }}
+      </TButton>
       <div class="search-input">
-        <t-input v-model="searchValue" :placeholder="t('pages.listCard.placeholder')" clearable>
+        <TInput v-model="searchValue" :placeholder="t('pages.listCard.placeholder')" clearable>
           <template #suffix-icon>
-            <search-icon v-if="searchValue === ''" size="var(--td-comp-size-xxxs)" />
+            <SearchIcon v-if="searchValue === ''" size="var(--td-comp-size-xxxs)" />
           </template>
-        </t-input>
+        </TInput>
       </div>
     </div>
 
-    <dialog-form v-model:visible="formDialogVisible" :data="formData" />
+    <DialogForm v-model:visible="formDialogVisible" :data="formData" />
 
     <template v-if="pagination.total > 0 && !dataLoading">
       <div class="list-card-items">
-        <t-row :gutter="[16, 16]">
-          <t-col
+        <TRow :gutter="[16, 16]">
+          <TCol
             v-for="product in productList.slice(
               pagination.pageSize * (pagination.current - 1),
               pagination.pageSize * pagination.current,
@@ -26,17 +123,17 @@
             :xs="6"
             :xl="3"
           >
-            <product-card
+            <ProductCard
               class="list-card-item"
               :product="product"
               @delete-item="handleDeleteItem"
               @manage-product="handleManageProduct"
             />
-          </t-col>
-        </t-row>
+          </TCol>
+        </TRow>
       </div>
       <div class="list-card-pagination">
-        <t-pagination
+        <TPagination
           v-model="pagination.current"
           v-model:page-size="pagination.pageSize"
           :total="pagination.total"
@@ -48,10 +145,10 @@
     </template>
 
     <div v-else-if="dataLoading" class="list-card-loading">
-      <t-loading size="large" text="加载数据中..." />
+      <TLoading size="large" text="加载数据中..." />
     </div>
 
-    <t-dialog
+    <TDialog
       v-model:visible="confirmVisible"
       header="确认删除所选产品？"
       :body="confirmBody"
@@ -60,99 +157,6 @@
     />
   </div>
 </template>
-<script setup lang="ts">
-import { SearchIcon } from 'tdesign-icons-vue-next';
-import { MessagePlugin } from 'tdesign-vue-next';
-import { computed, onMounted, ref } from 'vue';
-
-import { getCardList } from '@/api/list';
-import type { CardProductType } from '@/components/product-card/index.vue';
-import ProductCard from '@/components/product-card/index.vue';
-import { t } from '@/locales';
-
-import type { FormData } from './components/DialogForm.vue';
-import DialogForm from './components/DialogForm.vue';
-
-defineOptions({
-  name: 'ListCard',
-});
-
-const INITIAL_DATA: FormData = {
-  name: '',
-  status: '',
-  description: '',
-  type: '0',
-  mark: '',
-  amount: 0,
-};
-
-const pagination = ref({ current: 1, pageSize: 12, total: 0 });
-const deleteProduct = ref(undefined);
-
-const productList = ref([]);
-const dataLoading = ref(true);
-
-const fetchData = async () => {
-  try {
-    const { list } = await getCardList();
-    productList.value = list;
-    pagination.value = {
-      ...pagination.value,
-      total: list.length,
-    };
-  } catch (e) {
-    console.log(e);
-  } finally {
-    dataLoading.value = false;
-  }
-};
-
-const confirmBody = computed(() =>
-  deleteProduct.value ? `确认删除后${deleteProduct.value.name}的所有产品信息将被清空, 且无法恢复` : '',
-);
-
-onMounted(() => {
-  fetchData();
-});
-
-const formDialogVisible = ref(false);
-const searchValue = ref('');
-const confirmVisible = ref(false);
-const formData = ref({ ...INITIAL_DATA });
-
-const onPageSizeChange = (size: number) => {
-  pagination.value.pageSize = size;
-  pagination.value.current = 1;
-};
-const onCurrentChange = (current: number) => {
-  pagination.value.current = current;
-};
-const handleDeleteItem = (product: CardProductType) => {
-  confirmVisible.value = true;
-  deleteProduct.value = product;
-};
-const onConfirmDelete = () => {
-  const { index } = deleteProduct.value;
-  productList.value.splice(index - 1, 1);
-  confirmVisible.value = false;
-  MessagePlugin.success('删除成功');
-};
-const onCancel = () => {
-  deleteProduct.value = undefined;
-  formData.value = { ...INITIAL_DATA };
-};
-const handleManageProduct = (product: CardProductType) => {
-  formDialogVisible.value = true;
-  formData.value = {
-    name: product.name,
-    status: product?.isSetup ? '1' : '0',
-    description: product.description,
-    type: product.type.toString(),
-    mark: '',
-    amount: 0,
-  };
-};
-</script>
 <style lang="less" scoped>
 .list-card {
   height: 100%;

@@ -1,7 +1,7 @@
-import useMessage from '@/hooks/useMessage'
 import { createAlova } from 'alova'
 import adapterFetch from 'alova/fetch'
 import vueHook from 'alova/vue'
+import useMessage from '@/hooks/useMessage'
 
 export interface CustomMeta {
   /** 是否过滤data */
@@ -20,7 +20,7 @@ declare module 'alova' {
 
 // 默认只缓存get请求 cacheFor
 const alovaInstance = createAlova({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL_PREFIX,
   timeout: 5000,
   statesHook: vueHook,
   cacheFor: {
@@ -29,7 +29,7 @@ const alovaInstance = createAlova({
   },
   requestAdapter: adapterFetch(),
   beforeRequest: (config) => {
-    // console.log('beforeRequest', config)
+    console.log('beforeRequest', config)
     // const token = localStorage.getItem('token')
     // if (token)
     // config.config.headers.Authorization = `Bearer ${token}`
@@ -49,13 +49,17 @@ const alovaInstance = createAlova({
             return res
           }
           else {
+            console.log(res)
+
             if (res.code === 200) {
               return res.data
             }
             else {
               if (instance.meta?.hideAlert !== true) {
-                useMessage({type: 'error', msg: res.message})
+                useMessage({ type: 'error', msg: res.message })
               }
+              console.error(res.message)
+
               return Promise.reject(res.message)
             }
           }
@@ -63,15 +67,19 @@ const alovaInstance = createAlova({
       }
       else {
         if (instance.meta?.hideAlert !== true) {
-          useMessage({type: 'error', msg: response.statusText})
+          useMessage({ type: 'error', msg: response.statusText })
         }
+        console.error(response.statusText)
+
         return Promise.reject(response.statusText)
       }
     },
     onError: (error, instance) => {
       if (instance.meta?.hideAlert !== true) {
-        useMessage({type: 'error', msg: error.message})
+        useMessage({ type: 'error', msg: error.message })
       }
+      console.error(error)
+
       return Promise.reject(error)
     },
   },

@@ -1,6 +1,25 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+defineProps({
+  layout: {
+    type: String,
+    default: '',
+  },
+})
+
+const isSearchFocus = ref(false)
+const searchData = ref('')
+function changeSearchFocus(value: boolean) {
+  if (!value) {
+    searchData.value = ''
+  }
+  isSearchFocus.value = value
+}
+</script>
 <template>
   <div v-if="layout === 'side'" class="header-menu-search">
-    <t-input
+    <TInput
       class="header-search"
       :class="[{ 'hover-active': isSearchFocus }]"
       placeholder="请输入搜索内容"
@@ -8,22 +27,22 @@
       @focus="changeSearchFocus(true)"
     >
       <template #prefix-icon>
-        <t-icon class="icon" name="search" size="16" />
+        <TIcon class="icon" name="search" size="16" />
       </template>
-    </t-input>
+    </TInput>
   </div>
 
   <div v-else class="header-menu-search-left">
-    <t-button
+    <TButton
       :class="{ 'search-icon-hide': isSearchFocus }"
       theme="default"
       shape="square"
       variant="text"
       @click="changeSearchFocus(true)"
     >
-      <t-icon name="search" />
-    </t-button>
-    <t-input
+      <TIcon name="search" />
+    </TButton>
+    <TInput
       v-model="searchData"
       class="header-search"
       :class="[{ 'width-zero': !isSearchFocus }]"
@@ -32,30 +51,11 @@
       @blur="changeSearchFocus(false)"
     >
       <template #prefix-icon>
-        <t-icon name="search" size="16" />
+        <TIcon name="search" size="16" />
       </template>
-    </t-input>
+    </TInput>
   </div>
 </template>
-<script setup lang="ts">
-import { ref } from 'vue';
-
-defineProps({
-  layout: {
-    type: String,
-    default: '',
-  },
-});
-
-const isSearchFocus = ref(false);
-const searchData = ref('');
-const changeSearchFocus = (value: boolean) => {
-  if (!value) {
-    searchData.value = '';
-  }
-  isSearchFocus.value = value;
-};
-</script>
 <style lang="less" scoped>
 .header-menu-search {
   display: flex;
