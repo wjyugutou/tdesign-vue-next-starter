@@ -3,8 +3,6 @@ import type { SubmitContext, UploadFailContext, UploadFile } from 'tdesign-vue-n
 import { MessagePlugin } from 'tdesign-vue-next'
 import { ref } from 'vue'
 
-import { t } from '@/locales'
-
 import { FORM_RULES, INITIAL_DATA, PARTY_A_OPTIONS, PARTY_B_OPTIONS, TYPE_OPTIONS } from './constants'
 
 defineOptions({

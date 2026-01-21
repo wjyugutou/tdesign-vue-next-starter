@@ -1,5 +1,3 @@
-import { t } from '@/locales'
-
 export const BASE_INFO_DATA = [
   {
     name: '合同名称',

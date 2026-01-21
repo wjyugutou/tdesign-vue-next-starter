@@ -3,8 +3,6 @@ import type { SubmitContext } from 'tdesign-vue-next'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { t } from '@/locales'
-
 import {
   ADDRESS_OPTIONS,
   FORM_RULES,

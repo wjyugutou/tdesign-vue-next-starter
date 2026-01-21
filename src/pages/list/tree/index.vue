@@ -4,7 +4,6 @@ import { SearchIcon } from 'tdesign-icons-vue-next'
 import { ref } from 'vue'
 
 import CommonTable from '@/components/common-table/index.vue'
-import { t } from '@/locales'
 
 import { TREE_DATA } from './constants'
 

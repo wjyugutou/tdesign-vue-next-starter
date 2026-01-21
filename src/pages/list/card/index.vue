@@ -8,7 +8,6 @@ import { computed, onMounted, ref } from 'vue'
 import { getCardList } from '@/api/list'
 import ProductCard from '@/components/product-card/index.vue'
 
-import { t } from '@/locales'
 import DialogForm from './components/DialogForm.vue'
 
 defineOptions({

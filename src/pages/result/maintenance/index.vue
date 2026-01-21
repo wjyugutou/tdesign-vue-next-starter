@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Result from '@/components/result/index.vue'
-import { t } from '@/locales'
 
 defineOptions({
   name: 'ResultMaintenance',

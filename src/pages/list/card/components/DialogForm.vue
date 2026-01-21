@@ -4,8 +4,6 @@ import type { PropType } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { ref, watch } from 'vue'
 
-import { t } from '@/locales'
-
 export interface FormData {
   name: string
   status: string

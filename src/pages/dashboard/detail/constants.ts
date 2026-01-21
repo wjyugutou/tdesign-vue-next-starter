@@ -1,5 +1,3 @@
-import { t } from '@/locales'
-
 export const PANE_LIST_DATA = [
   {
     title: '总申请数（次）',

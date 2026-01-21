@@ -10,8 +10,6 @@ import {
   UserAvatarIcon,
 } from 'tdesign-icons-vue-next'
 
-import { t } from '@/locales'
-
 export interface CardProductType {
   type: number
   isSetup: boolean

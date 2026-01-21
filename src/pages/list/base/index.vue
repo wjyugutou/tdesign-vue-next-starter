@@ -9,7 +9,6 @@ import { getList } from '@/api/list'
 import Trend from '@/components/trend/index.vue'
 import { prefix } from '@/config/global'
 import { CONTRACT_PAYMENT_TYPES, CONTRACT_STATUS, CONTRACT_TYPES } from '@/constants'
-import { t } from '@/locales'
 import { useSettingStore } from '@/store'
 
 defineOptions({
