@@ -108,7 +108,7 @@ async function fetchData() {
     }
   }
   catch (e) {
-    console.log(e)
+    console.error(e)
   }
   finally {
     dataLoading.value = false
