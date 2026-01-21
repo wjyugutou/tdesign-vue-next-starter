@@ -9,17 +9,17 @@ defineOptions({
   <div class="result-success">
     <TIcon class="result-success-icon" name="check-circle" />
     <div class="result-success-title">
-      {{ '项目已创建成功' }}
+      项目已创建成功
     </div>
     <div class="result-success-describe">
-      {{ '可以联系负责人分发应用' }}
+      可以联系负责人分发应用
     </div>
     <div>
       <TButton theme="default" @click="() => $router.push('/detail/advanced')">
-        {{ '查看进度' }}
+        查看进度
       </TButton>
       <TButton @click="() => $router.push('/dashboard/base')">
-        {{ '回到首页' }}
+        回到首页
       </TButton>
     </div>
   </div>

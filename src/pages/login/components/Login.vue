@@ -143,9 +143,7 @@ async function onSubmit(ctx: SubmitContext) {
     </TFormItem>
 
     <div class="switch-container">
-      <span v-if="type !== 'password'" class="tip" @click="switchType('password')">{{
-        '账号登录'
-      }}</span>
+      <span v-if="type !== 'password'" class="tip" @click="switchType('password')">账号登录</span>
       <span v-if="type !== 'qrcode'" class="tip" @click="switchType('qrcode')">
         '微信登录'
       </span>

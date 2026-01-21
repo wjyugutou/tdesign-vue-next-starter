@@ -7,9 +7,9 @@ defineOptions({
 })
 </script>
 <template>
-  <Result title="500 Internal Server Error" type="500" :tip="'抱歉，服务器出错啦'">
+  <Result title="500 Internal Server Error" type="500" tip="抱歉，服务器出错啦">
     <TButton @click="() => $router.push('/')">
-      {{ '返回首页' }}
+      返回首页
     </TButton>
   </Result>
 </template>

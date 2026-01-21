@@ -183,45 +183,45 @@ const headerAffixedTop = computed(
         <TCol :span="10">
           <TRow :gutter="[24, 24]">
             <TCol :span="4">
-              <TFormItem :label="'合同名称'" name="name">
+              <TFormItem label="合同名称" name="name">
                 <TInput
                   v-model="formData.name"
                   class="form-item-content"
                   type="search"
-                  :placeholder="'请输入合同名称'"
+                  placeholder="请输入合同名称"
                   :style="{ minWidth: '134px' }"
                 />
               </TFormItem>
             </TCol>
             <TCol :span="4">
-              <TFormItem :label="'合同状态'" name="status">
+              <TFormItem label="合同状态" name="status">
                 <TSelect
                   v-model="formData.status"
                   class="form-item-content"
                   :options="CONTRACT_STATUS_OPTIONS"
-                  :placeholder="'请输入合同状态'"
+                  placeholder="请输入合同状态"
                   clearable
                 />
               </TFormItem>
             </TCol>
             <TCol :span="4">
-              <TFormItem :label="'合同编号'" name="no">
+              <TFormItem label="合同编号" name="no">
                 <TInput
                   v-model="formData.no"
                   class="form-item-content"
-                  :placeholder="'请输入合同编号'"
+                  placeholder="请输入合同编号"
                   :style="{ minWidth: '134px' }"
                 />
               </TFormItem>
             </TCol>
             <TCol :span="4">
-              <TFormItem :label="'合同类型'" name="type">
+              <TFormItem label="合同类型" name="type">
                 <TSelect
                   v-model="formData.type"
                   style="display: inline-block"
                   class="form-item-content"
                   :options="CONTRACT_TYPE_OPTIONS"
-                  :placeholder="'请选择合同类型'"
+                  placeholder="请选择合同类型"
                   clearable
                 />
               </TFormItem>
@@ -231,10 +231,10 @@ const headerAffixedTop = computed(
 
         <TCol :span="2" class="operation-container">
           <TButton theme="primary" type="submit" :style="{ marginLeft: 'var(--td-comp-margin-s)' }">
-            {{ '查询' }}
+            查询
           </TButton>
           <TButton type="reset" variant="base" theme="default">
-            {{ '重置' }}
+            重置
           </TButton>
         </TCol>
       </TRow>
@@ -255,47 +255,47 @@ const headerAffixedTop = computed(
       >
         <template #status="{ row }">
           <TTag v-if="row.status === CONTRACT_STATUS.FAIL" theme="danger" variant="light">
-            {{ '审核失败' }}
+            审核失败
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.AUDIT_PENDING" theme="warning" variant="light">
-            {{ '待审核' }}
+            待审核
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.EXEC_PENDING" theme="warning" variant="light">
-            {{ '待履行' }}
+            待履行
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.EXECUTING" theme="success" variant="light">
-            {{ '履行中' }}
+            履行中
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.FINISH" theme="success" variant="light">
-            {{ '已完成' }}
+            已完成
           </TTag>
         </template>
         <template #contractType="{ row }">
           <p v-if="row.contractType === CONTRACT_TYPES.MAIN">
-            {{ '审核失败' }}
+            审核失败
           </p>
           <p v-if="row.contractType === CONTRACT_TYPES.SUB">
-            {{ '待审核' }}
+            待审核
           </p>
           <p v-if="row.contractType === CONTRACT_TYPES.SUPPLEMENT">
-            {{ '待履行' }}
+            待履行
           </p>
         </template>
         <template #paymentType="{ row }">
           <div v-if="row.paymentType === CONTRACT_PAYMENT_TYPES.PAYMENT" class="payment-col">
-            {{ '付款' }}<Trend class="dashboard-item-trend" type="up" />
+            付款<Trend class="dashboard-item-trend" type="up" />
           </div>
           <div v-if="row.paymentType === CONTRACT_PAYMENT_TYPES.RECEIPT" class="payment-col">
-            {{ '收款' }}<Trend class="dashboard-item-trend" type="down" />
+            收款<Trend class="dashboard-item-trend" type="down" />
           </div>
         </template>
         <template #op="slotProps">
           <TSpace>
             <TLink theme="primary" @click="handleClickDetail()">
-              {{ '详情' }}
+              详情
             </TLink>
             <TLink theme="danger" @click="handleClickDelete(slotProps)">
-              {{ '删除' }}
+              删除
             </TLink>
           </TSpace>
         </template>

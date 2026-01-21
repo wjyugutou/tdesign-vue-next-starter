@@ -7,13 +7,13 @@ defineOptions({
 })
 </script>
 <template>
-  <Result :title="'网络异常'" :tip="'网络异常, 请稍后重试'" type="wifi">
+  <Result title="网络异常" tip="网络异常, 请稍后重试" type="wifi">
     <div>
       <TButton theme="default" @click="() => $router.push('/')">
-        {{ '回到首页' }}
+        回到首页
       </TButton>
       <TButton @click="() => $router.push('/')">
-        {{ '重新加载' }}
+        重新加载
       </TButton>
     </div>
   </Result>

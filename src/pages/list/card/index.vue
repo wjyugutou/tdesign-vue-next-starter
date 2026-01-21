@@ -97,10 +97,10 @@ function handleManageProduct(product: CardProductType) {
   <div>
     <div class="list-card-operation">
       <TButton @click="formDialogVisible = true">
-        {{ '新建产品' }}
+        新建产品
       </TButton>
       <div class="search-input">
-        <TInput v-model="searchValue" :placeholder="'请输入内容搜索'" clearable>
+        <TInput v-model="searchValue" placeholder="请输入内容搜索" clearable>
           <template #suffix-icon>
             <SearchIcon v-if="searchValue === ''" size="var(--td-comp-size-xxxs)" />
           </template>
