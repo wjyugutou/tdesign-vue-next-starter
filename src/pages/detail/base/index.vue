@@ -7,12 +7,12 @@ defineOptions({
 
 const BASE_INFO_DATA = [
   {
-    name: t('constants.contract.name'),
+    name: '合同名称',
     value: '总部办公用品采购项目',
     type: null,
   },
   {
-    name: t('constants.contract.status'),
+    name: '合同状态',
     value: '履行中',
     type: {
       key: 'contractStatus',
@@ -20,52 +20,52 @@ const BASE_INFO_DATA = [
     },
   },
   {
-    name: t('constants.contract.num'),
+    name: '合同编号',
     value: 'BH00010',
     type: null,
   },
   {
-    name: t('constants.contract.type'),
-    value: t('constants.contract.typeOptions.main'),
+    name: '合同类型',
+    value: '主合同',
     type: null,
   },
   {
-    name: t('constants.contract.payType'),
-    value: t('constants.contract.pay'),
+    name: '合同收支类型',
+    value: '付款',
     type: null,
   },
   {
-    name: t('constants.contract.amount'),
+    name: '合同金额',
     value: '¥ 5,000,000',
     type: null,
   },
   {
-    name: t('constants.contract.company'),
+    name: '甲方',
     value: '腾讯科技（深圳）有限公司',
     type: null,
   },
   {
-    name: t('constants.contract.employee'),
+    name: '乙方',
     value: '欧尚',
     type: null,
   },
   {
-    name: t('constants.contract.signDate'),
+    name: '合同签订日期',
     value: '2020-12-20',
     type: null,
   },
   {
-    name: t('constants.contract.effectiveDate'),
+    name: '合同生效日期',
     value: '2021-01-20',
     type: null,
   },
   {
-    name: t('constants.contract.endDate'),
+    name: '合同结束日期',
     value: '2022-12-20',
     type: null,
   },
   {
-    name: t('constants.contract.attachment'),
+    name: '附件',
     value: '总部办公用品采购项目合同.pdf',
     type: {
       key: 'contractAnnex',
@@ -73,7 +73,7 @@ const BASE_INFO_DATA = [
     },
   },
   {
-    name: t('constants.contract.createDate'),
+    name: '合同创建时间',
     value: '2020-12-22 10:00:00',
     type: null,
   },
@@ -82,7 +82,7 @@ const BASE_INFO_DATA = [
 <template>
   <div class="detail-base">
     <TCard :bordered="false">
-      <TDescriptions :title="t('pages.detailBase.baseInfo.title')">
+      <TDescriptions :title="'基本信息'">
         <TDescriptionsItem v-for="(item, index) in BASE_INFO_DATA" :key="index" :label="item.name">
           <span
             :class="{
@@ -97,19 +97,19 @@ const BASE_INFO_DATA = [
       </TDescriptions>
     </TCard>
 
-    <TCard :title="t('pages.detailBase.changelog.title')" class="container-base-margin-top" :bordered="false">
+    <TCard :title="'变更记录'" class="container-base-margin-top" :bordered="false">
       <TSteps class="detail-base-info-steps" layout="vertical" theme="dot" :current="1">
         <TStepItem
-          :title="t('pages.detailBase.changelog.step1.title')"
-          :content="t('pages.detailBase.changelog.step1.subtitle')"
+          :title="'上传合同附件'"
+          :content="'这里是提示文字'"
         />
         <TStepItem
-          :title="t('pages.detailBase.changelog.step2.title')"
-          :content="t('pages.detailBase.changelog.step2.subtitle')"
+          :title="'修改合同金额'"
+          :content="'这里是提示文字'"
         />
         <TStepItem
-          :title="t('pages.detailBase.changelog.step3.title')"
-          :content="t('pages.detailBase.changelog.step3.desc')"
+          :title="'新建合同'"
+          :content="'管理员-李川操作'"
         />
       </TSteps>
     </TCard>

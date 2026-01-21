@@ -31,7 +31,7 @@ function onInput() {
   <div class="table-tree-container">
     <div class="list-tree-wrapper">
       <div class="list-tree-operator">
-        <TInput v-model="filterText" :placeholder="t('pages.listTree.placeholder')" @change="onInput">
+        <TInput v-model="filterText" :placeholder="'请输入内容进行搜索'" @change="onInput">
           <template #suffix-icon>
             <SearchIcon size="var(--td-comp-size-xxxs)" />
           </template>

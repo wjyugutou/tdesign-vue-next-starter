@@ -7,9 +7,9 @@ defineOptions({
 })
 </script>
 <template>
-  <Result :title="t('pages.result.maintenance.title')" :tip="t('pages.result.maintenance.subtitle')" type="maintenance">
+  <Result :title="'系统维护中'" :tip="'系统维护中，请稍后再试'" type="maintenance">
     <TButton theme="primary" @click="() => $router.push('/')">
-      {{ t('pages.result.maintenance.back') }}
+      {{ '回到首页' }}
     </TButton>
   </Result>
 </template>

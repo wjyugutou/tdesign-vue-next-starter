@@ -7,13 +7,13 @@ defineOptions({
 })
 </script>
 <template>
-  <Result :title="t('pages.result.networkError.title')" :tip="t('pages.result.networkError.subtitle')" type="wifi">
+  <Result :title="'网络异常'" :tip="'网络异常, 请稍后重试'" type="wifi">
     <div>
       <TButton theme="default" @click="() => $router.push('/')">
-        {{ t('pages.result.networkError.back') }}
+        {{ '回到首页' }}
       </TButton>
       <TButton @click="() => $router.push('/')">
-        {{ t('pages.result.networkError.reload') }}
+        {{ '重新加载' }}
       </TButton>
     </div>
   </Result>

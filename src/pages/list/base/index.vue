@@ -21,39 +21,39 @@ const store = useSettingStore()
 const COLUMNS: PrimaryTableCol<TableRowData>[] = [
   { colKey: 'row-select', type: 'multiple', width: 64, fixed: 'left' },
   {
-    title: t('pages.listBase.contractName'),
+    title: '合同名称',
     align: 'left',
     width: 320,
     colKey: 'name',
     fixed: 'left',
   },
-  { title: t('pages.listBase.contractStatus'), colKey: 'status', width: 160 },
+  { title: '合同状态', colKey: 'status', width: 160 },
   {
-    title: t('pages.listBase.contractNum'),
+    title: '合同编号',
     width: 160,
     ellipsis: true,
     colKey: 'no',
   },
   {
-    title: t('pages.listBase.contractType'),
+    title: '合同类型',
     width: 160,
     ellipsis: true,
     colKey: 'contractType',
   },
   {
-    title: t('pages.listBase.contractPayType'),
+    title: '合同收支类型',
     width: 160,
     ellipsis: true,
     colKey: 'paymentType',
   },
   {
-    title: t('pages.listBase.contractAmount'),
+    title: '合同金额',
     width: 160,
     ellipsis: true,
     colKey: 'amount',
   },
   {
-    title: t('pages.listBase.operation'),
+    title: '操作',
     align: 'left',
     fixed: 'right',
     width: 160,
@@ -165,17 +165,17 @@ const headerAffixedTop = computed(
       <TRow justify="space-between">
         <div class="left-operation-container">
           <TButton @click="handleSetupContract">
-            {{ t('pages.listBase.create') }}
+            {{ '新建合同' }}
           </TButton>
           <TButton variant="base" theme="default" :disabled="!selectedRowKeys.length">
-            {{ t('pages.listBase.export') }}
+            {{ '导出合同' }}
           </TButton>
           <p v-if="!!selectedRowKeys.length" class="selected-count">
-            {{ t('pages.listBase.select') }} {{ selectedRowKeys.length }} {{ t('pages.listBase.items') }}
+            {{ '已选' }} {{ selectedRowKeys.length }} {{ '项' }}
           </p>
         </div>
         <div class="search-input">
-          <TInput v-model="searchValue" :placeholder="t('pages.listBase.placeholder')" clearable>
+          <TInput v-model="searchValue" :placeholder="'请输入内容搜索'" clearable>
             <template #suffix-icon>
               <SearchIcon size="16px" />
             </template>
@@ -198,48 +198,48 @@ const headerAffixedTop = computed(
       >
         <template #status="{ row }">
           <TTag v-if="row.status === CONTRACT_STATUS.FAIL" theme="danger" variant="light">
-            {{ t('pages.listBase.contractStatusEnum.fail') }}
+            {{ '审核失败' }}
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.AUDIT_PENDING" theme="warning" variant="light">
-            {{ t('pages.listBase.contractStatusEnum.audit') }}
+            {{ '待审核' }}
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.EXEC_PENDING" theme="warning" variant="light">
-            {{ t('pages.listBase.contractStatusEnum.pending') }}
+            {{ '待履行' }}
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.EXECUTING" theme="success" variant="light">
-            {{ t('pages.listBase.contractStatusEnum.executing') }}
+            {{ '履行中' }}
           </TTag>
           <TTag v-if="row.status === CONTRACT_STATUS.FINISH" theme="success" variant="light">
-            {{ t('pages.listBase.contractStatusEnum.finish') }}
+            {{ '已完成' }}
           </TTag>
         </template>
         <template #contractType="{ row }">
           <p v-if="row.contractType === CONTRACT_TYPES.MAIN">
-            {{ t('pages.listBase.contractStatusEnum.fail') }}
+            {{ '审核失败' }}
           </p>
           <p v-if="row.contractType === CONTRACT_TYPES.SUB">
-            {{ t('pages.listBase.contractStatusEnum.audit') }}
+            {{ '待审核' }}
           </p>
           <p v-if="row.contractType === CONTRACT_TYPES.SUPPLEMENT">
-            {{ t('pages.listBase.contractStatusEnum.pending') }}
+            {{ '待履行' }}
           </p>
         </template>
         <template #paymentType="{ row }">
           <div v-if="row.paymentType === CONTRACT_PAYMENT_TYPES.PAYMENT" class="payment-col">
-            {{ t('pages.listBase.pay') }}<Trend class="dashboard-item-trend" type="up" />
+            {{ '付款' }}<Trend class="dashboard-item-trend" type="up" />
           </div>
           <div v-if="row.paymentType === CONTRACT_PAYMENT_TYPES.RECEIPT" class="payment-col">
-            {{ t('pages.listBase.receive') }}<Trend class="dashboard-item-trend" type="down" />
+            {{ '收款' }}<Trend class="dashboard-item-trend" type="down" />
           </div>
         </template>
 
         <template #op="slotProps">
           <TSpace>
             <TLink theme="primary" @click="handleClickDetail()">
-              {{ t('pages.listBase.detail') }}
+              {{ '详情' }}
             </TLink>
             <TLink theme="danger" @click="handleClickDelete(slotProps)">
-              {{ t('pages.listBase.delete') }}
+              {{ '删除' }}
             </TLink>
           </TSpace>
         </template>

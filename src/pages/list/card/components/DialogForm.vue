@@ -89,34 +89,34 @@ const rules: FormRules<FormData> = {
 }
 </script>
 <template>
-  <TDialog v-model:visible="formVisible" :header="t('pages.listCard.create')" :width="680" :footer="false">
+  <TDialog v-model:visible="formVisible" :header="'新建产品'" :width="680" :footer="false">
     <template #body>
       <!-- 表单内容 -->
       <TForm :data="formData" :rules="rules" :label-width="100" @submit="onSubmit">
-        <TFormItem :label="t('pages.listCard.productName')" name="name">
+        <TFormItem :label="'产品名称'" name="name">
           <TInput v-model="formData.name" :style="{ width: '480px' }" />
         </TFormItem>
-        <TFormItem :label="t('pages.listCard.productStatus')" name="status">
+        <TFormItem :label="'产品状态'" name="status">
           <TRadioGroup v-model="formData.status">
             <TRadio value="0">
-              {{ t('pages.listCard.productStatusEnum.off') }}
+              {{ '停用' }}
             </TRadio>
             <TRadio value="1">
-              {{ t('pages.listCard.productStatusEnum.on') }}
+              {{ '启用' }}
             </TRadio>
           </TRadioGroup>
         </TFormItem>
-        <TFormItem :label="t('pages.listCard.productDescription')" name="description">
+        <TFormItem :label="'产品描述'" name="description">
           <TInput v-model="formData.description" :style="{ width: '480px' }" />
         </TFormItem>
-        <TFormItem :label="t('pages.listCard.productType')" name="type">
+        <TFormItem :label="'产品类型'" name="type">
           <TSelect v-model="formData.type" clearable :style="{ width: '480px' }">
             <TOption v-for="(item, index) in SELECT_OPTIONS" :key="index" :value="item.value" :label="item.label">
               {{ item.label }}
             </TOption>
           </TSelect>
         </TFormItem>
-        <TFormItem :label="t('pages.listCard.productRemark')" name="mark">
+        <TFormItem :label="'备注'" name="mark">
           <TTextarea v-model="textareaValue" :style="{ width: '480px' }" name="description" />
         </TFormItem>
         <TFormItem style="float: right">

@@ -7,9 +7,9 @@ defineOptions({
 })
 </script>
 <template>
-  <Result title="404 Not Found" :tip="t('pages.result.404.subtitle')" type="404">
+  <Result title="404 Not Found" :tip="'抱歉，您访问的页面不存在'" type="404">
     <TButton @click="() => $router.push('/')">
-      {{ t('pages.result.404.back') }}
+      {{ '返回首页' }}
     </TButton>
   </Result>
 </template>

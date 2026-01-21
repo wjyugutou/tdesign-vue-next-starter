@@ -98,12 +98,12 @@ watch(
       <div class="user-left-greeting">
         <div>
           Hi，Image
-          <span class="regular"> {{ t('pages.user.markDay') }}</span>
+          <span class="regular"> {{ '下午好，今天是你加入鹅厂的第 100 天' }}</span>
         </div>
         <img src="@/assets/assets-tencent-logo.png" class="logo">
       </div>
 
-      <TCard class="user-info-list" :title="t('pages.user.personalInfo.title')" :bordered="false">
+      <TCard class="user-info-list" :title="'个人信息'" :bordered="false">
         <template #actions>
           <TButton theme="default" shape="square" variant="text">
             <TIcon name="ellipsis" />
@@ -118,11 +118,11 @@ watch(
 
       <TCard class="content-container" :bordered="false">
         <TTabs value="second">
-          <TTabPanel value="first" :label="t('pages.user.contentList')">
-            <p>{{ t('pages.user.contentList') }}</p>
+          <TTabPanel value="first" :label="'内容列表'">
+            <p>{{ '内容列表' }}</p>
           </TTabPanel>
-          <TTabPanel value="second" :label="t('pages.user.contentList')">
-            <TCard :bordered="false" class="card-padding-no" :title="t('pages.user.visitData')" describe="（次）">
+          <TTabPanel value="second" :label="'内容列表'">
+            <TCard :bordered="false" class="card-padding-no" :title="'首页访问数据'" describe="（次）">
               <template #actions>
                 <TDateRangePicker
                   class="card-date-picker-container"
@@ -135,8 +135,8 @@ watch(
               <div id="lineContainer" style="width: 100%; height: 328px" />
             </TCard>
           </TTabPanel>
-          <TTabPanel value="third" :label="t('pages.user.contentList')">
-            <p>{{ t('pages.user.contentList') }}</p>
+          <TTabPanel value="third" :label="'内容列表'">
+            <p>{{ '内容列表' }}</p>
           </TTabPanel>
         </TTabs>
       </TCard>
@@ -151,11 +151,11 @@ watch(
           My Account
         </div>
         <div class="position">
-          {{ t('pages.user.personalInfo.position') }}
+          {{ '港澳业务拓展组员工 直客销售 ' }}
         </div>
       </TCard>
 
-      <TCard :title="t('pages.user.teamMember')" class="user-team" :bordered="false">
+      <TCard :title="'团队成员'" class="user-team" :bordered="false">
         <template #actions>
           <TButton theme="default" shape="square" variant="text">
             <TIcon name="ellipsis" />
@@ -168,7 +168,7 @@ watch(
         </TList>
       </TCard>
 
-      <TCard :title="t('pages.user.serviceProduction')" class="product-container" :bordered="false">
+      <TCard :title="'服务产品'" class="product-container" :bordered="false">
         <template #actions>
           <TButton theme="default" shape="square" variant="text">
             <TIcon name="ellipsis" />

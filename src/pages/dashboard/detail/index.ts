@@ -91,8 +91,8 @@ export function getScatterDataSet({
       bottom: '0',
       orient: 'horizontal', // legend 横向布局。
       data: [
-        t(`pages.dashboardDetail.procurement.goods.massageMachine`),
-        t(`pages.dashboardDetail.procurement.goods.coffeeMachine`),
+        '按摩仪',
+        '咖啡机',
       ],
       itemHeight: 8,
       itemWidth: 8,
@@ -103,13 +103,13 @@ export function getScatterDataSet({
     },
     series: [
       {
-        name: t(`pages.dashboardDetail.procurement.goods.massageMachine`),
+        name: '按摩仪',
         symbolSize: 10,
         data: outArray.reverse(),
         type: 'scatter',
       },
       {
-        name: t(`pages.dashboardDetail.procurement.goods.coffeeMachine`),
+        name: '咖啡机',
         symbolSize: 10,
         data: inArray.concat(inArray.reverse()),
         type: 'scatter',
@@ -145,10 +145,10 @@ export function getFolderLineDataSet({
       bottom: '0',
       orient: 'horizontal', // legend 横向布局。
       data: [
-        t(`pages.dashboardDetail.procurement.goods.cup`),
-        t(`pages.dashboardDetail.procurement.goods.tea`),
-        t(`pages.dashboardDetail.procurement.goods.honey`),
-        t(`pages.dashboardDetail.procurement.goods.flour`),
+        '杯子',
+        '茶叶',
+        '蜂蜜',
+        '面粉',
       ],
       textStyle: {
         fontSize: 12,
@@ -188,7 +188,7 @@ export function getFolderLineDataSet({
         showSymbol: true,
         symbol: 'circle',
         symbolSize: 8,
-        name: t(`pages.dashboardDetail.procurement.goods.cup`),
+        name: '杯子',
         stack: '总量',
         data: [
           getRandomArray(),
@@ -209,7 +209,7 @@ export function getFolderLineDataSet({
         showSymbol: true,
         symbol: 'circle',
         symbolSize: 8,
-        name: t(`pages.dashboardDetail.procurement.goods.tea`),
+        name: '茶叶',
         stack: '总量',
         data: [
           getRandomArray(),
@@ -230,7 +230,7 @@ export function getFolderLineDataSet({
         showSymbol: true,
         symbol: 'circle',
         symbolSize: 8,
-        name: t(`pages.dashboardDetail.procurement.goods.honey`),
+        name: '蜂蜜',
         stack: '总量',
         data: [
           getRandomArray(),
@@ -251,7 +251,7 @@ export function getFolderLineDataSet({
         showSymbol: true,
         symbol: 'circle',
         symbolSize: 8,
-        name: t(`pages.dashboardDetail.procurement.goods.flour`),
+        name: '面粉',
         stack: '总量',
         data: [
           getRandomArray(),

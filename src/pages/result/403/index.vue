@@ -7,9 +7,9 @@ defineOptions({
 })
 </script>
 <template>
-  <Result title="403 Forbidden" :tip="t('pages.result.403.tips')">
+  <Result title="403 Forbidden" :tip="'抱歉，您无权限访问此页面，企业微信联系创建者'">
     <TButton @click="() => $router.push('/')">
-      {{ t('pages.result.403.back') }}
+      {{ '返回首页' }}
     </TButton>
   </Result>
 </template>
