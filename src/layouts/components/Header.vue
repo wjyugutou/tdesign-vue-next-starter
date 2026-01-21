@@ -29,7 +29,7 @@ const { theme, layout, showLogo, menu, isFixed, isCompact } = defineProps({
   },
   menu: {
     type: Array as PropType<MenuRoute[]>,
-    default: () => [],
+    default: () => [] as MenuRoute[],
   },
   isFixed: {
     type: Boolean,
@@ -122,12 +122,12 @@ function navToHelper() {
           <!-- 全局通知 -->
           <Notice />
 
-          <TTooltip placement="bottom" :content="代码仓库">
+          <TTooltip placement="bottom" content="代码仓库">
             <TButton theme="default" shape="square" variant="text" @click="navToGitHub">
               <TIcon name="logo-github" />
             </TButton>
           </TTooltip>
-          <TTooltip placement="bottom" :content="帮助文档">
+          <TTooltip placement="bottom" content="帮助文档">
             <TButton theme="default" shape="square" variant="text" @click="navToHelper">
               <TIcon name="help-circle" />
             </TButton>
@@ -153,7 +153,7 @@ function navToHelper() {
               </template>
             </TButton>
           </TDropdown>
-          <TTooltip placement="bottom" :content="系统设置">
+          <TTooltip placement="bottom" content="系统设置">
             <TButton theme="default" shape="square" variant="text" @click="toggleSettingPanel">
               <SettingIcon />
             </TButton>

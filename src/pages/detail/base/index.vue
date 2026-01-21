@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { t } from '@/locales'
+
 defineOptions({
   name: 'DetailBase',
 })
@@ -80,7 +82,7 @@ const BASE_INFO_DATA = [
 <template>
   <div class="detail-base">
     <TCard :bordered="false">
-      <TDescriptions title="基本信息">
+      <TDescriptions :title="'基本信息'">
         <TDescriptionsItem v-for="(item, index) in BASE_INFO_DATA" :key="index" :label="item.name">
           <span
             :class="{
@@ -95,19 +97,19 @@ const BASE_INFO_DATA = [
       </TDescriptions>
     </TCard>
 
-    <TCard title="变更记录" class="container-base-margin-top" :bordered="false">
+    <TCard :title="'变更记录'" class="container-base-margin-top" :bordered="false">
       <TSteps class="detail-base-info-steps" layout="vertical" theme="dot" :current="1">
         <TStepItem
-          title="上传合同附件"
-          content="这里是提示文字"
+          :title="'上传合同附件'"
+          :content="'这里是提示文字'"
         />
         <TStepItem
-          title="修改合同金额"
-          content="这里是提示文字"
+          :title="'修改合同金额'"
+          :content="'这里是提示文字'"
         />
         <TStepItem
-          title="新建合同"
-          content="管理员-李川操作"
+          :title="'新建合同'"
+          :content="'管理员-李川操作'"
         />
       </TSteps>
     </TCard>

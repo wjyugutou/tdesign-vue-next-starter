@@ -10,7 +10,7 @@ type ListItemType = MenuRoute
 const { navData } = defineProps({
   navData: {
     type: Array as PropType<MenuRoute[]>,
-    default: () => [],
+    default: () => [] as ListItemType[],
   },
 })
 
@@ -28,6 +28,8 @@ function menuIcon(item: ListItemType) {
 }
 
 function renderMenuTitle(title: string | Record<string, string>) {
+  console.log('renderMenuTitle', title)
+
   if (typeof title === 'string')
     return title
 }

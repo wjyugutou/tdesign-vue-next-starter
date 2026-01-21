@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { NotificationItem } from '@/types/interface'
 import { storeToRefs } from 'pinia'
-
 import { useRouter } from 'vue-router'
 import { useNotificationStore } from '@/store'
 
